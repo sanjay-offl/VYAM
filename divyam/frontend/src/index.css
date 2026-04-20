@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Dark + gold palette (Coolie-inspired), exposed as RGB triplets for Tailwind */
+  --color-bg: 8 10 15;
+  --color-surface: 18 22 31;
+  --color-text: 233 236 243;
+  --color-muted: 161 169 186;
+  --color-gold: 212 175 55;
+  --color-danger: 248 113 113;
+
+  color-scheme: dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --a11y-font-scale: 1;
+}
+
+html {
+  font-size: calc(16px * var(--a11y-font-scale));
+}
+
+html.high-contrast {
+  --color-bg: 0 0 0;
+  --color-surface: 0 0 0;
+  --color-text: 255 255 255;
+  --color-muted: 220 220 220;
+  --color-gold: 255 215 0;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(900px circle at 20% 10%, rgb(var(--color-gold) / 0.12), transparent 50%),
+    radial-gradient(700px circle at 80% 0%, rgb(99 102 241 / 0.10), transparent 55%),
+    radial-gradient(900px circle at 60% 90%, rgb(236 72 153 / 0.10), transparent 55%),
+    rgb(var(--color-bg));
+}
+
+/* Accessible focus ring */
+:focus-visible {
+  outline: 2px solid rgb(var(--color-gold));
+  outline-offset: 2px;
+}
+
+/* Screen-reader only utility (Tailwind has sr-only, but keep for safety) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: 0.75rem;
+  transform: translateY(-200%);
+  transition: transform 120ms ease;
+  z-index: 50;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
