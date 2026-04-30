@@ -63,66 +63,64 @@ export default function Dashboard() {
   }, [fallbackLectures])
 
   return (
-    <div className="space-y-6">
-      <header className="rounded-2xl border border-white/10 bg-white/5 p-6">
-        <h1 className="text-2xl font-semibold text-text">Dashboard</h1>
-        <p className="mt-1 text-sm text-muted">
-          Welcome, <span className="text-text">{user?.name || 'Student'}</span>.
+    <div className="space-y-8 py-4">
+      <section className="card card-glow">
+        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <p className="mt-2 text-gray-600">
+          Welcome back, <span className="font-semibold text-purple-900">{user?.name || 'Student'}</span>! Here's your progress overview.
         </p>
-      </header>
+      </section>
 
       {loading ? <Loader label="Loading dashboard…" /> : null}
 
-      <section className="grid gap-4 md:grid-cols-3" aria-label="Student progress">
-        <div className="rounded-2xl border border-white/10 bg-surface/20 p-5">
-          <div className="text-xs text-muted">Completed lectures</div>
-          <div className="mt-1 text-2xl font-semibold text-text">
+      <section className="grid-3" aria-label="Student progress">
+        <div className="card">
+          <div className="text-xs font-semibold uppercase tracking-wide text-gray-500">Completed Lectures</div>
+          <div className="mt-3 text-4xl font-bold text-purple-600">
             {analytics?.completedLectures ?? 0}
           </div>
+          <div className="mt-2 text-sm text-gray-600">lectures completed this term</div>
         </div>
-        <div className="rounded-2xl border border-white/10 bg-surface/20 p-5">
-          <div className="text-xs text-muted">Minutes watched</div>
-          <div className="mt-1 text-2xl font-semibold text-text">
+        <div className="card">
+          <div className="text-xs font-semibold uppercase tracking-wide text-gray-500">Minutes Watched</div>
+          <div className="mt-3 text-4xl font-bold text-purple-600">
             {analytics?.minutesWatched ?? 0}
           </div>
+          <div className="mt-2 text-sm text-gray-600">total learning time</div>
         </div>
-        <div className="rounded-2xl border border-white/10 bg-surface/20 p-5">
-          <div className="text-xs text-muted">Engagement score</div>
-          <div className="mt-1 text-2xl font-semibold text-text">
-            {analytics?.engagementScore != null
-              ? `${Math.round(analytics.engagementScore * 100)}%`
-              : '—'}
+        <div className="card">
+          <div className="text-xs font-semibold uppercase tracking-wide text-gray-500">Engagement Score</div>
+          <div className="mt-3 text-4xl font-bold text-purple-600">
+            {analytics?.engagementScore != null ? `${Math.round(analytics.engagementScore * 100)}%` : '—'}
           </div>
+          <div className="mt-2 text-sm text-gray-600">based on participation</div>
         </div>
       </section>
 
-      <section aria-label="Recommended lectures" className="space-y-3">
-        <div className="flex flex-wrap items-end justify-between gap-2">
-          <h2 className="text-base font-semibold text-text">Recommended lectures</h2>
+      <section aria-label="Recommended lectures" className="space-y-4">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <h2 className="text-2xl font-bold">Recommended Lectures</h2>
           <Link
             to="/recorded"
-            className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-text hover:bg-white/10 focus:outline-none"
+            className="btn btn-outline btn-sm"
             aria-label="View all recorded lectures"
           >
-            View all
+            View All Lectures →
           </Link>
         </div>
 
-        <div className="grid gap-3 md:grid-cols-2">
+        <div className="grid-2">
           {(lectures || []).slice(0, 4).map((l) => (
-            <article
-              key={l.id}
-              className="rounded-2xl border border-white/10 bg-white/5 p-5"
-            >
-              <h3 className="text-sm font-semibold text-text">{l.title}</h3>
-              <p className="mt-1 text-sm text-muted">{l.description}</p>
-              <div className="mt-3">
+            <article key={l.id} className="card group">
+              <h3 className="text-base font-semibold text-gray-900">{l.title}</h3>
+              <p className="mt-2 text-sm text-gray-600">{l.description}</p>
+              <div className="mt-4">
                 <Link
                   to="/recorded"
-                  className="inline-flex rounded-xl border border-white/10 bg-gold/15 px-3 py-2 text-sm text-text hover:bg-gold/20 focus:outline-none"
+                  className="inline-flex items-center rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 px-4 py-2 text-sm font-medium text-white transition-all duration-200 group-hover:shadow-lg group-hover:shadow-purple-500/25"
                   aria-label={`Open recorded lectures for ${l.title}`}
                 >
-                  Open
+                  Watch Lecture →
                 </Link>
               </div>
             </article>

@@ -7,16 +7,16 @@ function Item({ to, label, description }) {
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `block rounded-2xl border px-4 py-3 focus:outline-none ${
+        `card transition-all duration-200 ${
           isActive
-            ? 'border-gold/40 bg-gold/10'
-            : 'border-white/10 bg-white/5 hover:bg-white/10'
+            ? 'border-purple-300 bg-purple-50 shadow-md'
+            : 'border-purple-100 hover:border-purple-200 hover:shadow-sm'
         }`
       }
       aria-label={label}
     >
-      <div className="text-sm font-medium text-text">{label}</div>
-      <div className="mt-0.5 text-xs text-muted">{description}</div>
+      <div className="font-medium text-gray-900">{label}</div>
+      <div className="mt-1 text-xs text-gray-500">{description}</div>
     </NavLink>
   )
 }
@@ -25,26 +25,26 @@ export default function Sidebar() {
   const { user } = useAuth()
 
   return (
-    <nav aria-label="Sidebar" className="space-y-2">
-      <div className="rounded-2xl border border-white/10 bg-surface/20 p-4 backdrop-blur">
-        <div className="text-sm font-semibold text-text">Quick Actions</div>
-        <div className="mt-1 text-xs text-muted">
-          Keyboard friendly navigation for students.
-        </div>
+    <nav aria-label="Sidebar navigation" className="space-y-3">
+      <div className="card">
+        <h2 className="font-semibold text-gray-900">Navigation</h2>
+        <p className="mt-1 text-xs text-gray-500">
+          Keyboard friendly — press Tab to navigate through options.
+        </p>
       </div>
 
-      <Item to="/dashboard" label="Dashboard" description="Progress and recommendations" />
-      <Item to="/live" label="Live Class" description="WebRTC video + chat" />
-      <Item to="/recorded" label="Recorded Lectures" description="Player with speed and narration" />
+      <Item to="/dashboard" label="📊 Dashboard" description="Your progress and stats" />
+      <Item to="/live" label="🎥 Live Classes" description="Real-time WebRTC classes" />
+      <Item to="/recorded" label="📚 Lectures" description="Watch on-demand lessons" />
 
-      {user?.role === 'TEACHER' ? (
-        <Item to="/teacher" label="Teacher Panel" description="Upload videos, homework, analytics" />
-      ) : null}
+      {user?.role === 'TEACHER' && (
+        <Item to="/teacher" label="👨‍🏫 Teacher Panel" description="Manage uploads & analytics" />
+      )}
 
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-        <div className="text-xs text-muted">
-          Tip: Press <span className="text-text">Tab</span> to move across controls.
-        </div>
+      <div className="card bg-purple-50 text-purple-900">
+        <p className="text-sm">
+          💡 <span className="font-medium">Pro Tip:</span> Use voice commands — say "dashboard" to navigate with Voice Assistant!
+        </p>
       </div>
     </nav>
   )

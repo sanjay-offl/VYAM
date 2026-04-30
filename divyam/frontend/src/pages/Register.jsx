@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { useAuth } from '../context/AuthContext.jsx'
 import Loader from '../components/Loader.jsx'
 import { ROLES } from '../utils/constants.js'
@@ -33,96 +34,116 @@ export default function Register() {
   }
 
   return (
-    <div className="mx-auto max-w-xl">
-      <header className="mb-4">
-        <h1 className="text-2xl font-semibold text-text">Create account</h1>
-        <p className="mt-1 text-sm text-muted">
-          Register as Student or Teacher (role-based access).
-        </p>
-      </header>
+    <div className="min-h-screen flex items-center justify-center py-8 px-4">
+      <div className="w-full max-w-md">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="mb-8 text-center"
+        >
+          <h1 className="text-3xl font-bold">Create Account</h1>
+          <p className="mt-2 text-gray-600">
+            Join DIVYAM as a student or teacher to access premium learning resources.
+          </p>
+        </motion.div>
 
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-        {error ? (
-          <div
-            className="mb-3 rounded-xl border border-danger/40 bg-danger/10 px-4 py-2 text-sm text-text"
-            role="alert"
-          >
-            {error}
-          </div>
-        ) : null}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1, duration: 0.3 }}
+          className="card card-glow"
+        >
+          {error && (
+            <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800" role="alert">
+              {error}
+            </div>
+          )}
 
-        <form onSubmit={onSubmit} className="space-y-4" aria-label="Register form">
-          <label className="block">
-            <span className="text-sm text-text">Full name</span>
-            <input
-              className="mt-1 w-full rounded-xl border border-white/10 bg-surface/50 px-3 py-2 text-sm text-text focus:outline-none"
-              value={form.name}
-              onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-              type="text"
-              required
-              aria-label="Full name"
-              autoComplete="name"
-            />
-          </label>
+          <form onSubmit={onSubmit} className="space-y-5" aria-label="Register form">
+            <div className="form-group">
+              <label className="block text-sm font-medium text-gray-900">
+                Full Name
+              </label>
+              <input
+                className="input mt-2"
+                value={form.name}
+                onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                type="text"
+                required
+                placeholder="John Doe"
+                aria-label="Full name"
+                autoComplete="name"
+              />
+            </div>
 
-          <label className="block">
-            <span className="text-sm text-text">Email</span>
-            <input
-              className="mt-1 w-full rounded-xl border border-white/10 bg-surface/50 px-3 py-2 text-sm text-text focus:outline-none"
-              value={form.email}
-              onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-              type="email"
-              required
-              aria-label="Email"
-              autoComplete="email"
-            />
-          </label>
+            <div className="form-group">
+              <label className="block text-sm font-medium text-gray-900">
+                Email Address
+              </label>
+              <input
+                className="input mt-2"
+                value={form.email}
+                onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+                type="email"
+                required
+                placeholder="name@example.com"
+                aria-label="Email"
+                autoComplete="email"
+              />
+            </div>
 
-          <label className="block">
-            <span className="text-sm text-text">Password</span>
-            <input
-              className="mt-1 w-full rounded-xl border border-white/10 bg-surface/50 px-3 py-2 text-sm text-text focus:outline-none"
-              value={form.password}
-              onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
-              type="password"
-              required
-              aria-label="Password"
-              autoComplete="new-password"
-            />
-          </label>
+            <div className="form-group">
+              <label className="block text-sm font-medium text-gray-900">
+                Password
+              </label>
+              <input
+                className="input mt-2"
+                value={form.password}
+                onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
+                type="password"
+                required
+                placeholder="••••••••"
+                aria-label="Password"
+                autoComplete="new-password"
+              />
+              <p className="mt-2 text-xs text-gray-500">At least 8 characters recommended</p>
+            </div>
 
-          <label className="block">
-            <span className="text-sm text-text">Role</span>
-            <select
-              className="mt-1 w-full rounded-xl border border-white/10 bg-surface/50 px-3 py-2 text-sm text-text focus:outline-none"
-              value={form.role}
-              onChange={(e) => setForm((f) => ({ ...f, role: e.target.value }))}
-              aria-label="Select role"
-            >
-              <option value={ROLES.STUDENT}>Student</option>
-              <option value={ROLES.TEACHER}>Teacher</option>
-            </select>
-          </label>
+            <div className="form-group">
+              <label className="block text-sm font-medium text-gray-900">
+                Role
+              </label>
+              <select
+                className="input mt-2"
+                value={form.role}
+                onChange={(e) => setForm((f) => ({ ...f, role: e.target.value }))}
+                aria-label="Select role"
+              >
+                <option value={ROLES.STUDENT}>Student</option>
+                <option value={ROLES.TEACHER}>Teacher</option>
+              </select>
+            </div>
 
-          <div className="flex flex-wrap items-center gap-2">
             <button
               type="submit"
               disabled={!canSubmit || isLoading}
-              className="rounded-xl border border-white/10 bg-gold/15 px-4 py-2 text-sm text-text hover:bg-gold/20 focus:outline-none disabled:opacity-50"
+              className="btn btn-primary w-full"
               aria-label="Create account"
             >
-              Create account
+              {isLoading ? 'Creating Account...' : 'Create Account'}
             </button>
-            {isLoading ? <Loader label="Creating…" /> : null}
-          </div>
+          </form>
 
-          <div className="text-sm text-muted">
-            Already have an account?{' '}
-            <Link className="text-text underline" to="/login" aria-label="Go to login">
-              Login
-            </Link>
+          <div className="mt-6 border-t border-purple-200 pt-6 text-center">
+            <p className="text-sm text-gray-600">
+              Already have an account?{' '}
+              <Link className="font-semibold text-purple-600 hover:text-purple-700" to="/login" aria-label="Go to login">
+                Sign In
+              </Link>
+            </p>
           </div>
-        </form>
+        </motion.div>
       </div>
     </div>
   )

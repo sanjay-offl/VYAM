@@ -8,10 +8,10 @@ function NavItem({ to, children, ariaLabel }) {
       to={to}
       aria-label={ariaLabel}
       className={({ isActive }) =>
-        `rounded-xl px-3 py-2 text-sm transition focus:outline-none ${
+        `nav-item transition-all duration-200 ${
           isActive
-            ? 'bg-gold/15 text-text'
-            : 'text-muted hover:bg-white/5 hover:text-text'
+            ? 'bg-purple-100/30 text-purple-900 font-medium'
+            : 'text-gray-600 hover:text-purple-900 hover:bg-purple-50/40'
         }`
       }
     >
@@ -25,17 +25,17 @@ export default function Navbar() {
   const navigate = useNavigate()
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-surface/20 backdrop-blur-md">
+    <header className="sticky top-0 z-40 bg-white/75 backdrop-blur-lg border-b border-purple-200/30 shadow-sm">
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-3 px-3 md:px-6">
         <div className="flex items-center gap-3">
           <Link
             to="/"
-            className="rounded-xl px-2 py-1 text-base font-semibold tracking-wide text-text focus:outline-none"
+            className="rounded-lg px-2 py-1 text-lg font-bold tracking-tight focus:outline-none transition-all hover:opacity-80"
             aria-label="Go to DIVYAM Home"
           >
-            <span className="text-gold">DIVYAM</span>
-            <span className="ml-2 hidden text-muted md:inline">
-              Digital Innovation for Visionary Young Accessible Minds
+            <span className="gradient-text">DIVYAM</span>
+            <span className="ml-2 hidden text-sm text-gray-600 font-normal md:inline">
+              Accessible Learning Platform
             </span>
           </Link>
         </div>
@@ -73,12 +73,12 @@ export default function Navbar() {
           )}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {isAuthenticated ? (
             <>
               <div className="hidden text-right md:block">
-                <div className="text-sm text-text">{user?.name || 'User'}</div>
-                <div className="text-xs text-muted">{user?.role || 'STUDENT'}</div>
+                <div className="text-sm font-medium text-gray-900">{user?.name || 'User'}</div>
+                <div className="text-xs text-gray-500">{user?.role || 'STUDENT'}</div>
               </div>
               <button
                 type="button"
@@ -86,7 +86,7 @@ export default function Navbar() {
                   logout()
                   navigate('/')
                 }}
-                className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-text hover:bg-white/10 focus:outline-none"
+                className="btn btn-outline btn-sm"
                 aria-label="Log out"
               >
                 Logout
@@ -96,14 +96,14 @@ export default function Navbar() {
             <div className="flex items-center gap-2">
               <Link
                 to="/login"
-                className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-text hover:bg-white/10 focus:outline-none"
+                className="btn btn-outline btn-sm"
                 aria-label="Go to login"
               >
                 Login
               </Link>
               <Link
                 to="/register"
-                className="rounded-xl border border-white/10 bg-gold/15 px-3 py-2 text-sm text-text hover:bg-gold/20 focus:outline-none"
+                className="btn btn-primary btn-sm"
                 aria-label="Go to register"
               >
                 Register

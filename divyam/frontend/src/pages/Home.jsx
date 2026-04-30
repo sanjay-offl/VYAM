@@ -2,9 +2,29 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
+    },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.35, ease: 'easeOut' },
+  },
+}
+
 export default function Home() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-10 py-4">
       <header className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
         <motion.h1
           initial={{ opacity: 0, y: 8 }}

@@ -20,63 +20,63 @@ export default function VoiceAssistant() {
     <div className="fixed bottom-4 right-4 z-50">
       {open ? (
         <div
-          className="w-80 rounded-2xl border border-white/10 bg-surface/40 p-4 backdrop-blur-md"
+          className="w-80 card"
           role="dialog"
           aria-label="Voice assistant"
         >
-          <div className="flex items-start justify-between gap-2">
+          <div className="flex items-start justify-between gap-3">
             <div>
-              <div className="text-sm font-semibold text-text">Voice Assistant</div>
-              <div className="mt-1 text-xs text-muted">
-                Use voice commands for quick navigation.
-              </div>
+              <h2 className="font-semibold text-gray-900">🎤 Voice Assistant</h2>
+              <p className="mt-1 text-xs text-gray-500">
+                Say commands like "dashboard" or "recorded lectures" to navigate.
+              </p>
             </div>
             <button
               type="button"
-              className="rounded-xl border border-white/10 bg-white/5 px-2 py-1 text-sm text-text hover:bg-white/10 focus:outline-none"
+              className="btn btn-outline btn-sm"
               onClick={() => setOpen(false)}
               aria-label="Close voice assistant"
             >
-              Close
+              ✕
             </button>
           </div>
 
-          <div className="mt-3 rounded-2xl border border-white/10 bg-black/20 p-3">
-            <div className="text-xs text-muted">Try saying:</div>
-            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-text">
-              <li>dashboard</li>
-              <li>live class</li>
-              <li>recorded lectures</li>
-              <li>teacher panel</li>
-              <li>logout</li>
+          <div className="mt-4 rounded-lg border border-purple-200 bg-purple-50 p-3">
+            <p className="text-xs font-semibold text-purple-900 uppercase">Try saying:</p>
+            <ul className="mt-2 space-y-1 text-sm text-purple-800">
+              <li>📊 "dashboard" — go to your learning progress</li>
+              <li>🎥 "live" — start a live class session</li>
+              <li>📚 "lectures" — browse recorded lessons</li>
+              <li>👨‍🏫 "teacher" — open teacher panel (if teacher)</li>
+              <li>🚪 "logout" — sign out of your account</li>
             </ul>
           </div>
 
-          <div className="mt-3 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-wrap gap-2">
             <button
               type="button"
-              className="rounded-xl border border-white/10 bg-gold/15 px-3 py-2 text-sm text-text hover:bg-gold/20 focus:outline-none"
+              className="btn btn-primary btn-sm"
               onClick={() => a11y.setVoiceNavEnabled(!a11y.voiceNavEnabled)}
               aria-label="Toggle voice navigation"
             >
-              {a11y.voiceNavEnabled ? 'Disable voice nav' : 'Enable voice nav'}
+              {a11y.voiceNavEnabled ? '🔇 Disable Voice' : '🎤 Enable Voice'}
             </button>
 
             <button
               type="button"
-              className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-text hover:bg-white/10 focus:outline-none"
-              onClick={() => a11y.speak('Welcome to DIVYAM. How can I help?')}
+              className="btn btn-secondary btn-sm"
+              onClick={() => a11y.speak('Welcome to DIVYAM. Your accessible learning platform.')}
               aria-label="Speak help message"
             >
-              Speak help
+              🔊 Speak Help
             </button>
           </div>
 
-          {!a11y.voiceSupported ? (
-            <div className="mt-3 text-xs text-muted">
-              Voice recognition is not supported in this browser.
+          {!a11y.voiceSupported && (
+            <div className="mt-3 rounded-lg border border-red-200 bg-red-50 p-3 text-xs text-red-700">
+              ⚠️ Voice recognition is not supported in this browser. Try Chrome, Edge, or Firefox.
             </div>
-          ) : null}
+          )}
         </div>
       ) : null}
 
