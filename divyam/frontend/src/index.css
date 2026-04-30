@@ -2,74 +2,102 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  /* Premium Purple Theme */
-  --color-bg: 248 248 251; /* #F8F8FB */
-  --color-surface: 255 255 255; /* Pure white */
-  --color-text: 26 26 26; /* #1A1A1A */
-  --color-muted: 102 102 102; /* #666 */
-  --color-primary-light: 165 107 255; /* #A56BFF */
-  --color-primary-dark: 106 61 255; /* #6A3DFF */
-  --color-secondary: 233 216 255; /* #E9D8FF */
-  --color-accent: 75 31 184; /* #4B1FB8 */
-  --color-danger: 239 68 68; /* #EF4444 */
+@layer base {
+  label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: rgb(var(--color-text));
+  }
+}
 
+/* ============================================================
+   DIVYAM — Light Lavender Glass Design System
+   ============================================================ */
+
+:root {
+  /* ── Core Palette ──────────────────────────────────────── */
+  --color-bg:           250 250 255;   /* #FAFAFF */
+  --color-surface:      255 255 255;   /* pure white glass base */
+  --color-text:         17  24  39;    /* #111827 */
+  --color-muted:        107 114 128;   /* #6B7280 */
+
+  /* ── Lavender Primary ──────────────────────────────────── */
+  --color-primary-light: 196 181 253;  /* #C4B5FD */
+  --color-primary-dark:  139  92 246;  /* #8B5CF6 */
+  --color-secondary:     237 233 254;  /* #EDE9FE */
+  --color-accent:         76  29 149;  /* #4C1D95 */
+
+  /* ── Semantic ──────────────────────────────────────────── */
+  --color-danger:        239  68  68;  /* #EF4444 */
+  --color-success:        34 197  94;  /* #22C55E */
+
+  /* ── Glass Surface ─────────────────────────────────────── */
+  --glass-bg:        rgba(255,255,255,0.60);
+  --glass-border:    rgba(139,92,246,0.15);
+  --glass-shadow:    0 4px 24px rgba(139,92,246,0.10), 0 1px 4px rgba(0,0,0,0.04);
+
+  /* ── Typography ────────────────────────────────────────── */
   color-scheme: light;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  /* ── A11y ──────────────────────────────────────────────── */
   --a11y-font-scale: 1;
 }
 
+/* High-contrast override */
+html.high-contrast {
+  --color-bg:           255 255 255;
+  --color-surface:      255 255 255;
+  --color-text:           0   0   0;
+  --color-muted:          0   0   0;
+  --color-primary-light: 109  40 217;
+  --color-primary-dark:   76  29 149;
+  --glass-bg:           rgba(255,255,255,0.95);
+  --glass-border:       rgba(76,29,149,0.5);
+}
+
+/* ── Font scale ─────────────────────────────────────────── */
 html {
   font-size: calc(16px * var(--a11y-font-scale));
 }
 
-html.high-contrast {
-  --color-bg: 255 255 255;
-  --color-surface: 255 255 255;
-  --color-text: 0 0 0;
-  --color-muted: 0 0 0;
-  --color-primary-light: 106 61 255;
-  --color-primary-dark: 75 31 184;
-}
-
+/* ── Body: orb gradient background ─────────────────────── */
 body {
   margin: 0;
   min-height: 100vh;
   background:
-    radial-gradient(900px circle at 20% 10%, rgb(165 107 255 / 0.08), transparent 50%),
-    radial-gradient(700px circle at 80% 0%, rgb(233 216 255 / 0.06), transparent 55%),
-    radial-gradient(900px circle at 60% 90%, rgb(106 61 255 / 0.06), transparent 55%),
+    radial-gradient(900px circle at 10%  5%,  rgba(196,181,253,0.18), transparent 50%),
+    radial-gradient(700px circle at 85%  0%,  rgba(237,233,254,0.14), transparent 55%),
+    radial-gradient(900px circle at 60%  95%, rgba(139,92,246,0.10),  transparent 55%),
     rgb(var(--color-bg));
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: rgb(var(--color-text));
 }
 
-/* Accessible focus ring - Purple accent */
+/* ── Accessible focus ring ──────────────────────────────── */
 :focus-visible {
   outline: 2px solid rgb(var(--color-primary-dark));
   outline-offset: 2px;
+  border-radius: 6px;
 }
 
-/* Screen-reader only utility (Tailwind has sr-only, but keep for safety) */
+/* ── Screen-reader only ─────────────────────────────────── */
 .sr-only {
   position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip: rect(0,0,0,0);
   white-space: nowrap;
   border-width: 0;
 }
 
-/* Skip link */
+/* ── Skip link ──────────────────────────────────────────── */
 .skip-link {
   position: absolute;
   left: 0.75rem;
@@ -77,8 +105,21 @@ body {
   transform: translateY(-200%);
   transition: transform 120ms ease;
   z-index: 50;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  font-weight: 500;
+  color: rgb(var(--color-text));
 }
+.skip-link:focus { transform: translateY(0); }
 
-.skip-link:focus {
-  transform: translateY(0);
+/* ── Reduced-motion safety ──────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

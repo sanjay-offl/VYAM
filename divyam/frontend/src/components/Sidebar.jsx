@@ -2,21 +2,27 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 
-function Item({ to, label, description }) {
+function Item({ to, label, description, icon }) {
   return (
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `card transition-all duration-200 ${
+        `block rounded-2xl border p-4 transition-all duration-200 ${
           isActive
-            ? 'border-purple-300 bg-purple-50 shadow-md'
-            : 'border-purple-100 hover:border-purple-200 hover:shadow-sm'
+            ? 'border-lavender-300/60 bg-lavender-50/80 shadow-glass-sm'
+            : 'border-transparent bg-white/40 hover:border-lavender-200/50 hover:bg-lavender-50/40 hover:scale-[1.02] hover:shadow-glass-sm'
         }`
       }
       aria-label={label}
+      style={{ backdropFilter: 'blur(8px)' }}
     >
-      <div className="font-medium text-gray-900">{label}</div>
-      <div className="mt-1 text-xs text-gray-500">{description}</div>
+      <div className="flex items-center gap-3">
+        {icon && <span className="text-xl" aria-hidden="true">{icon}</span>}
+        <div>
+          <div className="text-sm font-semibold text-gray-800">{label}</div>
+          <div className="mt-0.5 text-xs text-gray-500 leading-snug">{description}</div>
+        </div>
+      </div>
     </NavLink>
   )
 }
@@ -25,25 +31,39 @@ export default function Sidebar() {
   const { user } = useAuth()
 
   return (
-    <nav aria-label="Sidebar navigation" className="space-y-3">
-      <div className="card">
-        <h2 className="font-semibold text-gray-900">Navigation</h2>
-        <p className="mt-1 text-xs text-gray-500">
-          Keyboard friendly — press Tab to navigate through options.
+    <nav aria-label="Sidebar navigation" className="space-y-3 sticky top-24">
+      {/* Header Card */}
+      <div
+        className="rounded-2xl border p-4"
+        style={{ background: 'var(--glass-bg)', borderColor: 'var(--glass-border)', backdropFilter: 'blur(16px)' }}
+      >
+        <h2
+          className="text-sm font-bold uppercase tracking-widest"
+          style={{ background: 'linear-gradient(135deg,#C4B5FD,#8B5CF6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
+        >
+          Navigation
+        </h2>
+        <p className="mt-1 text-xs text-gray-400 leading-snug">
+          Keyboard friendly — press Tab to navigate.
         </p>
       </div>
 
-      <Item to="/dashboard" label="📊 Dashboard" description="Your progress and stats" />
-      <Item to="/live" label="🎥 Live Classes" description="Real-time WebRTC classes" />
-      <Item to="/recorded" label="📚 Lectures" description="Watch on-demand lessons" />
+      <Item to="/dashboard" icon="📊" label="Dashboard" description="Your progress and stats" />
+      <Item to="/live"      icon="🎥" label="Live Classes" description="Real-time WebRTC classes" />
+      <Item to="/recorded"  icon="📚" label="Lectures" description="Watch on-demand lessons" />
 
       {user?.role === 'TEACHER' && (
-        <Item to="/teacher" label="👨‍🏫 Teacher Panel" description="Manage uploads & analytics" />
+        <Item to="/teacher" icon="👨‍🏫" label="Teacher Panel" description="Manage uploads & analytics" />
       )}
 
-      <div className="card bg-purple-50 text-purple-900">
-        <p className="text-sm">
-          💡 <span className="font-medium">Pro Tip:</span> Use voice commands — say "dashboard" to navigate with Voice Assistant!
+      {/* Tip Card */}
+      <div
+        className="rounded-2xl border p-4"
+        style={{ background: 'rgba(237,233,254,0.55)', borderColor: 'rgba(196,181,253,0.35)', backdropFilter: 'blur(8px)' }}
+      >
+        <p className="text-xs text-lavender-700 leading-relaxed">
+          💡 <span className="font-semibold">Pro Tip:</span> Use voice commands — say{' '}
+          <span className="font-medium">"dashboard"</span> to navigate with Voice Assistant!
         </p>
       </div>
     </nav>

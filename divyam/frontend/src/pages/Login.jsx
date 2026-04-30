@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { useAuth } from '../context/AuthContext.jsx'
 import Loader from '../components/Loader.jsx'
 
@@ -7,23 +8,18 @@ export default function Login() {
   const { login, isLoading } = useAuth()
   const navigate = useNavigate()
 
-  const [form, setForm] = useState({
-    email: '',
-    password: '',
-  })
+  const [form, setForm] = useState({ email: '', password: '' })
   const [error, setError] = useState('')
   const [info, setInfo] = useState('')
 
   const canSubmit = useMemo(() => {
-    if (!form.email || !form.password) return false
-    return true
+    return !!(form.email && form.password)
   }, [form])
 
   async function onSubmit(e) {
     e.preventDefault()
     setError('')
     setInfo('')
-
     try {
       const result = await login({ email: form.email, password: form.password })
       if (result?.mode === 'mock') {
@@ -36,94 +32,138 @@ export default function Login() {
   }
 
   return (
-    <div className="mx-auto max-w-xl">
-      <header className="mb-4">
-        <h1 className="text-2xl font-semibold text-text">Sign in</h1>
-        <p className="mt-1 text-sm text-muted">
-          Accessible authentication with Student/Teacher roles.
-        </p>
-      </header>
-
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-        {error ? (
-          <div
-            className="mb-3 rounded-xl border border-danger/40 bg-danger/10 px-4 py-2 text-sm text-text"
-            role="alert"
+    <div className="flex min-h-[60vh] items-center justify-center py-6 px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35 }}
+        className="w-full max-w-md"
+      >
+        {/* Header */}
+        <div className="mb-8 text-center">
+          <h1
+            className="text-3xl font-extrabold"
+            style={{ fontFamily: 'Poppins,sans-serif', background: 'linear-gradient(135deg,#8B5CF6,#C4B5FD)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
           >
-            {error}
-          </div>
-        ) : null}
+            Welcome Back
+          </h1>
+          <p className="mt-2 text-sm text-gray-500">
+            Sign in to your DIVYAM account to continue learning.
+          </p>
+        </div>
 
-        {info ? (
-          <div
-            className="mb-3 rounded-xl border border-gold/40 bg-gold/10 px-4 py-2 text-sm text-text"
-            role="status"
-          >
-            {info}
-          </div>
-        ) : null}
+        {/* Card */}
+        <div
+          className="rounded-2xl border p-7 shadow-glass"
+          style={{ background: 'rgba(255,255,255,0.7)', borderColor: 'rgba(139,92,246,0.18)', backdropFilter: 'blur(16px)' }}
+        >
+          {/* Error */}
+          {error ? (
+            <div
+              className="mb-4 rounded-xl border px-4 py-3 text-sm text-red-700"
+              style={{ background: 'rgba(239,68,68,0.06)', borderColor: 'rgba(239,68,68,0.25)' }}
+              role="alert"
+            >
+              ⚠️ {error}
+            </div>
+          ) : null}
 
-        <form onSubmit={onSubmit} className="space-y-4" aria-label="Authentication form">
-          <label className="block">
-            <span className="text-sm text-text">Email</span>
-            <input
-              className="mt-1 w-full rounded-xl border border-white/10 bg-surface/50 px-3 py-2 text-sm text-text focus:outline-none"
-              value={form.email}
-              onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-              type="email"
-              required
-              aria-label="Email"
-              autoComplete="email"
-            />
-          </label>
+          {/* Info */}
+          {info ? (
+            <div
+              className="mb-4 rounded-xl border px-4 py-3 text-sm"
+              style={{ background: 'rgba(196,181,253,0.15)', borderColor: 'rgba(196,181,253,0.4)', color: '#6D28D9' }}
+              role="status"
+            >
+              ℹ️ {info}
+            </div>
+          ) : null}
 
-          <label className="block">
-            <span className="text-sm text-text">Password</span>
-            <input
-              className="mt-1 w-full rounded-xl border border-white/10 bg-surface/50 px-3 py-2 text-sm text-text focus:outline-none"
-              value={form.password}
-              onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
-              type="password"
-              required
-              aria-label="Password"
-              autoComplete="current-password"
-            />
-          </label>
+          <form onSubmit={onSubmit} className="space-y-5" aria-label="Authentication form">
+            {/* Email */}
+            <div className="form-group">
+              <label htmlFor="login-email">Email</label>
+              <input
+                id="login-email"
+                value={form.email}
+                onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+                type="email"
+                required
+                aria-label="Email"
+                autoComplete="email"
+                placeholder="you@example.com"
+              />
+            </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+            {/* Password */}
+            <div className="form-group">
+              <label htmlFor="login-password">Password</label>
+              <input
+                id="login-password"
+                value={form.password}
+                onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
+                type="password"
+                required
+                aria-label="Password"
+                autoComplete="current-password"
+                placeholder="••••••••"
+              />
+            </div>
+
+            {/* Submit */}
             <button
               type="submit"
               disabled={!canSubmit || isLoading}
-              className="rounded-xl border border-white/10 bg-gold/15 px-4 py-2 text-sm text-text hover:bg-gold/20 focus:outline-none disabled:opacity-50"
+              className="btn btn-primary w-full"
               aria-label="Login"
             >
-              Login
+              {isLoading ? 'Signing in…' : '→ Sign In'}
             </button>
+
             {isLoading ? <Loader label="Authenticating…" /> : null}
-          </div>
 
-          <div className="text-sm text-muted">
-            New here?{' '}
-            <Link className="text-text underline" to="/register" aria-label="Go to register">
-              Create an account
-            </Link>
-          </div>
+            {/* Register link */}
+            <p className="text-center text-sm text-gray-500">
+              New here?{' '}
+              <Link
+                className="font-semibold"
+                style={{ color: '#7C3AED' }}
+                to="/register"
+                aria-label="Go to register"
+              >
+                Create an account
+              </Link>
+            </p>
+          </form>
 
-          <details className="rounded-xl border border-white/10 bg-surface/20 px-4 py-3">
-            <summary className="cursor-pointer text-sm text-text">Demo credentials</summary>
-            <div className="mt-2 text-sm text-muted">
+          {/* Demo credentials */}
+          <details
+            className="mt-5 rounded-xl border"
+            style={{ borderColor: 'rgba(196,181,253,0.3)', background: 'rgba(237,233,254,0.3)' }}
+          >
+            <summary
+              className="cursor-pointer px-4 py-3 text-sm font-medium select-none"
+              style={{ color: '#7C3AED' }}
+            >
+              🔑 Demo credentials
+            </summary>
+            <div className="px-4 pb-4 pt-2 text-sm space-y-2">
               <div>
-                Student: <span className="text-text">student@divyam.local</span> /{' '}
-                <span className="text-text">student123</span>
+                <span className="font-medium text-gray-700">Student: </span>
+                <code className="text-xs rounded px-1.5 py-0.5" style={{ background: 'rgba(196,181,253,0.25)', color: '#6D28D9' }}>student@divyam.local</code>
+                <span className="text-gray-500"> / </span>
+                <code className="text-xs rounded px-1.5 py-0.5" style={{ background: 'rgba(196,181,253,0.25)', color: '#6D28D9' }}>student123</code>
               </div>
-              <div className="mt-1">
-                Teacher: <span className="text-text">teacher@divyam.local</span> /{' '}
-                <span className="text-text">teacher123</span>
+              <div>
+                <span className="font-medium text-gray-700">Teacher: </span>
+                <code className="text-xs rounded px-1.5 py-0.5" style={{ background: 'rgba(196,181,253,0.25)', color: '#6D28D9' }}>teacher@divyam.local</code>
+                <span className="text-gray-500"> / </span>
+                <code className="text-xs rounded px-1.5 py-0.5" style={{ background: 'rgba(196,181,253,0.25)', color: '#6D28D9' }}>teacher123</code>
               </div>
             </div>
           </details>
-        </form>
-      </div>
+        </div>
+      </motion.div>
     </div>
   )
 }

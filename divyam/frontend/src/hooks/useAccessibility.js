@@ -94,7 +94,7 @@ export default function useAccessibility() {
   )
 
   const { speak, stop } = useSpeech({ enabled: state.ttsEnabled })
-  const { supported: voiceSupported } = useVoiceCommands({
+  const { supported: voiceSupported, listening: voiceListening, voiceError } = useVoiceCommands({
     enabled: state.voiceNavEnabled,
     ttsEnabled: state.ttsEnabled,
   })
@@ -108,6 +108,8 @@ export default function useAccessibility() {
     () => ({
       ...state,
       voiceSupported,
+      voiceListening,
+      voiceError,
       setHighContrast,
       setTtsEnabled,
       setNarrationEnabled,
@@ -116,7 +118,7 @@ export default function useAccessibility() {
       speak,
       stopSpeaking: stop,
     }),
-    [state, voiceSupported, speak, stop],
+    [state, voiceSupported, voiceListening, voiceError, speak, stop],
   )
 
   return api

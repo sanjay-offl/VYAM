@@ -18,8 +18,7 @@ export default function Register() {
   const [error, setError] = useState('')
 
   const canSubmit = useMemo(() => {
-    if (!form.name || !form.email || !form.password || !form.role) return false
-    return true
+    return !!(form.name && form.email && form.password && form.role)
   }, [form])
 
   async function onSubmit(e) {
@@ -34,55 +33,66 @@ export default function Register() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-8 px-4">
-      <div className="w-full max-w-md">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="mb-8 text-center"
-        >
-          <h1 className="text-3xl font-bold">Create Account</h1>
-          <p className="mt-2 text-gray-600">
+    <div className="flex min-h-[60vh] items-center justify-center py-8 px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35 }}
+        className="w-full max-w-md"
+      >
+        {/* Header */}
+        <div className="mb-8 text-center">
+          <h1
+            className="text-3xl font-extrabold"
+            style={{ fontFamily: 'Poppins,sans-serif', background: 'linear-gradient(135deg,#8B5CF6,#C4B5FD)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
+          >
+            Create Account
+          </h1>
+          <p className="mt-2 text-sm text-gray-500">
             Join DIVYAM as a student or teacher to access premium learning resources.
           </p>
-        </motion.div>
+        </div>
 
+        {/* Card */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.1, duration: 0.3 }}
-          className="card card-glow"
+          transition={{ delay: 0.1, duration: 0.28 }}
+          className="rounded-2xl border p-7 shadow-glass"
+          style={{ background: 'rgba(255,255,255,0.7)', borderColor: 'rgba(139,92,246,0.18)', backdropFilter: 'blur(16px)' }}
         >
+          {/* Error */}
           {error && (
-            <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800" role="alert">
-              {error}
+            <div
+              className="mb-5 rounded-xl border px-4 py-3 text-sm text-red-700"
+              style={{ background: 'rgba(239,68,68,0.06)', borderColor: 'rgba(239,68,68,0.25)' }}
+              role="alert"
+            >
+              ⚠️ {error}
             </div>
           )}
 
           <form onSubmit={onSubmit} className="space-y-5" aria-label="Register form">
+            {/* Full Name */}
             <div className="form-group">
-              <label className="block text-sm font-medium text-gray-900">
-                Full Name
-              </label>
+              <label htmlFor="reg-name">Full Name</label>
               <input
-                className="input mt-2"
+                id="reg-name"
                 value={form.name}
                 onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
                 type="text"
                 required
-                placeholder="John Doe"
+                placeholder="Your full name"
                 aria-label="Full name"
                 autoComplete="name"
               />
             </div>
 
+            {/* Email */}
             <div className="form-group">
-              <label className="block text-sm font-medium text-gray-900">
-                Email Address
-              </label>
+              <label htmlFor="reg-email">Email Address</label>
               <input
-                className="input mt-2"
+                id="reg-email"
                 value={form.email}
                 onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
                 type="email"
@@ -93,12 +103,11 @@ export default function Register() {
               />
             </div>
 
+            {/* Password */}
             <div className="form-group">
-              <label className="block text-sm font-medium text-gray-900">
-                Password
-              </label>
+              <label htmlFor="reg-password">Password</label>
               <input
-                className="input mt-2"
+                id="reg-password"
                 value={form.password}
                 onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
                 type="password"
@@ -107,15 +116,14 @@ export default function Register() {
                 aria-label="Password"
                 autoComplete="new-password"
               />
-              <p className="mt-2 text-xs text-gray-500">At least 8 characters recommended</p>
+              <p className="mt-1.5 text-xs text-gray-400">At least 8 characters recommended.</p>
             </div>
 
+            {/* Role */}
             <div className="form-group">
-              <label className="block text-sm font-medium text-gray-900">
-                Role
-              </label>
+              <label htmlFor="reg-role">Role</label>
               <select
-                className="input mt-2"
+                id="reg-role"
                 value={form.role}
                 onChange={(e) => setForm((f) => ({ ...f, role: e.target.value }))}
                 aria-label="Select role"
@@ -125,26 +133,38 @@ export default function Register() {
               </select>
             </div>
 
+            {/* Submit */}
             <button
               type="submit"
               disabled={!canSubmit || isLoading}
               className="btn btn-primary w-full"
               aria-label="Create account"
             >
-              {isLoading ? 'Creating Account...' : 'Create Account'}
+              {isLoading ? 'Creating Account…' : '✨ Create Account'}
             </button>
+
+            {isLoading ? <Loader label="Creating your account…" /> : null}
           </form>
 
-          <div className="mt-6 border-t border-purple-200 pt-6 text-center">
-            <p className="text-sm text-gray-600">
+          {/* Login link */}
+          <div
+            className="mt-6 border-t pt-5 text-center"
+            style={{ borderColor: 'rgba(196,181,253,0.3)' }}
+          >
+            <p className="text-sm text-gray-500">
               Already have an account?{' '}
-              <Link className="font-semibold text-purple-600 hover:text-purple-700" to="/login" aria-label="Go to login">
+              <Link
+                className="font-semibold"
+                style={{ color: '#7C3AED' }}
+                to="/login"
+                aria-label="Go to login"
+              >
                 Sign In
               </Link>
             </p>
           </div>
         </motion.div>
-      </div>
+      </motion.div>
     </div>
   )
 }

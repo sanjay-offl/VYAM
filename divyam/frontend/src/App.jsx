@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
+import './App.css'
 import Navbar from './components/Navbar.jsx'
 import Sidebar from './components/Sidebar.jsx'
 import AccessibilityControls from './components/AccessibilityControls.jsx'
@@ -22,7 +23,7 @@ function Page({ children }) {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
-      transition={{ duration: 0.2, ease: 'easeOut' }}
+      transition={{ duration: 0.22, ease: 'easeOut' }}
       className="min-h-[calc(100vh-4rem)]"
     >
       {children}
@@ -50,11 +51,9 @@ function VoiceNavBridge() {
         navigate('/')
         return
       }
-
       const path = voiceCommandToPath(transcript)
       if (path) navigate(path)
     }
-
     window.addEventListener('divyam:voice', onVoice)
     return () => window.removeEventListener('divyam:voice', onVoice)
   }, [logout, navigate])
@@ -67,18 +66,16 @@ export default function App() {
   const { isAuthenticated } = useAuth()
 
   return (
-    <div className="min-h-screen text-text">
+    <div className="min-h-screen" style={{ background: 'rgb(var(--color-bg))' }}>
       <VoiceNavBridge />
       <VoiceAssistant />
-      <a className="skip-link rounded-xl bg-surface/80 px-4 py-2 text-text backdrop-blur" href="#main">
-        Skip to main content
-      </a>
+      <a className="skip-link" href="#main">Skip to main content</a>
 
       <Navbar />
 
-      <div className="mx-auto flex w-full max-w-7xl gap-4 px-3 pb-10 pt-4 md:px-6">
+      <div className="mx-auto flex w-full max-w-7xl gap-6 px-4 pb-12 pt-6 md:px-6">
         {isAuthenticated ? (
-          <aside className="hidden w-64 shrink-0 md:block">
+          <aside className="hidden w-64 shrink-0 md:block" aria-label="Sidebar">
             <Sidebar />
           </aside>
         ) : null}
@@ -86,86 +83,35 @@ export default function App() {
         <main
           id="main"
           role="main"
-          className="w-full rounded-2xl border border-white/10 bg-surface/25 p-4 shadow-2xl backdrop-blur-md md:p-6"
+          className="w-full min-w-0 rounded-2xl border bg-white/60 p-5 shadow-glass backdrop-blur-xl md:p-7"
+          style={{ borderColor: 'var(--glass-border)' }}
         >
-          <div className="mb-4">
+          <div className="mb-5">
             <AccessibilityControls />
           </div>
 
           <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>
-              <Route
-                path="/"
-                element={
-                  <Page>
-                    <Home />
-                  </Page>
-                }
-              />
-              <Route
-                path="/login"
-                element={
-                  <Page>
-                    <Login />
-                  </Page>
-                }
-              />
-              <Route
-                path="/register"
-                element={
-                  <Page>
-                    <Register />
-                  </Page>
-                }
-              />
+              <Route path="/" element={<Page><Home /></Page>} />
+              <Route path="/login" element={<Page><Login /></Page>} />
+              <Route path="/register" element={<Page><Register /></Page>} />
               <Route
                 path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <Page>
-                      <Dashboard />
-                    </Page>
-                  </ProtectedRoute>
-                }
+                element={<ProtectedRoute><Page><Dashboard /></Page></ProtectedRoute>}
               />
               <Route
                 path="/live"
-                element={
-                  <ProtectedRoute>
-                    <Page>
-                      <LiveClass />
-                    </Page>
-                  </ProtectedRoute>
-                }
+                element={<ProtectedRoute><Page><LiveClass /></Page></ProtectedRoute>}
               />
               <Route
                 path="/recorded"
-                element={
-                  <ProtectedRoute>
-                    <Page>
-                      <RecordedLectures />
-                    </Page>
-                  </ProtectedRoute>
-                }
+                element={<ProtectedRoute><Page><RecordedLectures /></Page></ProtectedRoute>}
               />
               <Route
                 path="/teacher"
-                element={
-                  <ProtectedRoute role="TEACHER">
-                    <Page>
-                      <TeacherPanel />
-                    </Page>
-                  </ProtectedRoute>
-                }
+                element={<ProtectedRoute role="TEACHER"><Page><TeacherPanel /></Page></ProtectedRoute>}
               />
-              <Route
-                path="*"
-                element={
-                  <Page>
-                    <NotFound />
-                  </Page>
-                }
-              />
+              <Route path="*" element={<Page><NotFound /></Page>} />
             </Routes>
           </AnimatePresence>
         </main>

@@ -8,77 +8,105 @@ export default function AccessibilityControls() {
   return (
     <section
       aria-label="Accessibility controls"
-      className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur"
+      className="rounded-2xl border p-4"
+      style={{ background: 'rgba(255,255,255,0.55)', borderColor: 'rgba(139,92,246,0.15)', backdropFilter: 'blur(12px)' }}
     >
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
-          <h2 className="text-base font-semibold text-text">Accessibility</h2>
-          <p className="text-sm text-muted">
-            Text-to-Speech, contrast, font size, and voice navigation.
+          <h2 className="text-sm font-semibold text-gray-800">
+            ♿ Accessibility
+          </h2>
+          <p className="text-xs text-gray-500 mt-0.5">
+            TTS, contrast, font size & voice navigation.
           </p>
         </div>
-
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
-          className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-text hover:bg-white/10 focus:outline-none"
+          className="btn btn-outline btn-sm"
           aria-expanded={expanded}
           aria-controls="a11y-panel"
         >
-          {expanded ? 'Hide' : 'Show'} controls
+          {expanded ? '▲ Hide' : '▼ Show'} controls
         </button>
       </div>
 
       {expanded ? (
         <div id="a11y-panel" className="mt-4 grid gap-3 md:grid-cols-2">
-          <label className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-surface/20 px-4 py-3">
-            <span className="text-sm text-text">High contrast</span>
+
+          {/* High Contrast */}
+          <label
+            className="flex items-center justify-between gap-3 rounded-xl border px-4 py-3 cursor-pointer transition-colors hover:bg-lavender-50/50"
+            style={{ borderColor: 'rgba(139,92,246,0.15)', background: 'rgba(255,255,255,0.6)' }}
+          >
+            <span className="text-sm text-gray-800 font-medium">High contrast</span>
             <input
               type="checkbox"
               checked={a11y.highContrast}
               onChange={(e) => a11y.setHighContrast(e.target.checked)}
               aria-label="Toggle high contrast mode"
-              className="h-5 w-5 accent-[rgb(var(--color-gold))]"
+              className="h-5 w-5 rounded accent-violet-600"
             />
           </label>
 
-          <label className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-surface/20 px-4 py-3">
-            <span className="text-sm text-text">Text-to-Speech (TTS)</span>
+          {/* TTS */}
+          <label
+            className="flex items-center justify-between gap-3 rounded-xl border px-4 py-3 cursor-pointer transition-colors hover:bg-lavender-50/50"
+            style={{ borderColor: 'rgba(139,92,246,0.15)', background: 'rgba(255,255,255,0.6)' }}
+          >
+            <span className="text-sm text-gray-800 font-medium">Text-to-Speech</span>
             <input
               type="checkbox"
               checked={a11y.ttsEnabled}
               onChange={(e) => a11y.setTtsEnabled(e.target.checked)}
               aria-label="Toggle text to speech"
-              className="h-5 w-5 accent-[rgb(var(--color-gold))]"
+              className="h-5 w-5 rounded accent-violet-600"
             />
           </label>
 
-          <label className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-surface/20 px-4 py-3">
-            <span className="text-sm text-text">Audio narration</span>
+          {/* Audio Narration */}
+          <label
+            className="flex items-center justify-between gap-3 rounded-xl border px-4 py-3 cursor-pointer transition-colors hover:bg-lavender-50/50"
+            style={{ borderColor: 'rgba(139,92,246,0.15)', background: 'rgba(255,255,255,0.6)' }}
+          >
+            <span className="text-sm text-gray-800 font-medium">Audio narration</span>
             <input
               type="checkbox"
               checked={a11y.narrationEnabled}
               onChange={(e) => a11y.setNarrationEnabled(e.target.checked)}
               aria-label="Toggle audio narration"
-              className="h-5 w-5 accent-[rgb(var(--color-gold))]"
+              className="h-5 w-5 rounded accent-violet-600"
             />
           </label>
 
-          <label className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-surface/20 px-4 py-3">
-            <span className="text-sm text-text">Voice navigation</span>
+          {/* Voice Nav */}
+          <label
+            className="flex items-center justify-between gap-3 rounded-xl border px-4 py-3 cursor-pointer transition-colors hover:bg-lavender-50/50"
+            style={{ borderColor: 'rgba(139,92,246,0.15)', background: 'rgba(255,255,255,0.6)' }}
+          >
+            <span className="text-sm text-gray-800 font-medium">Voice navigation</span>
             <input
               type="checkbox"
               checked={a11y.voiceNavEnabled}
               onChange={(e) => a11y.setVoiceNavEnabled(e.target.checked)}
               aria-label="Toggle voice navigation"
-              className="h-5 w-5 accent-[rgb(var(--color-gold))]"
+              className="h-5 w-5 rounded accent-violet-600"
             />
           </label>
 
-          <div className="rounded-2xl border border-white/10 bg-surface/20 px-4 py-3">
+          {/* Font Size */}
+          <div
+            className="rounded-xl border px-4 py-3"
+            style={{ borderColor: 'rgba(139,92,246,0.15)', background: 'rgba(255,255,255,0.6)' }}
+          >
             <div className="flex items-center justify-between gap-3">
-              <span className="text-sm text-text">Font size</span>
-              <span className="text-xs text-muted">{Math.round(a11y.fontScale * 100)}%</span>
+              <span className="text-sm text-gray-800 font-medium">Font size</span>
+              <span
+                className="text-xs font-semibold rounded-full px-2 py-0.5"
+                style={{ background: 'rgba(196,181,253,0.3)', color: '#7C3AED' }}
+              >
+                {Math.round(a11y.fontScale * 100)}%
+              </span>
             </div>
             <input
               type="range"
@@ -88,34 +116,37 @@ export default function AccessibilityControls() {
               value={a11y.fontScale}
               onChange={(e) => a11y.setFontScale(e.target.value)}
               aria-label="Font size"
-              className="mt-2 w-full"
+              className="mt-2 w-full accent-violet-600"
             />
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-surface/20 px-4 py-3">
-            <div className="text-sm text-text">Quick TTS test</div>
-            <p className="mt-1 text-xs text-muted">
-              Uses your browser’s Speech Synthesis API.
-            </p>
-            <div className="mt-2 flex flex-wrap gap-2">
+          {/* TTS Test */}
+          <div
+            className="rounded-xl border px-4 py-3"
+            style={{ borderColor: 'rgba(139,92,246,0.15)', background: 'rgba(255,255,255,0.6)' }}
+          >
+            <div className="text-sm text-gray-800 font-medium">Quick TTS test</div>
+            <p className="mt-0.5 text-xs text-gray-500">Uses browser Speech Synthesis API.</p>
+            <div className="mt-3 flex flex-wrap gap-2">
               <button
                 type="button"
                 onClick={() => a11y.speak('Welcome to DIVYAM. Accessibility is enabled.')}
-                className="rounded-xl border border-white/10 bg-gold/15 px-3 py-2 text-sm text-text hover:bg-gold/20 focus:outline-none"
+                className="btn btn-primary btn-sm"
                 aria-label="Play sample speech"
               >
-                Speak
+                🔊 Speak
               </button>
               <button
                 type="button"
                 onClick={() => a11y.stopSpeaking()}
-                className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-text hover:bg-white/10 focus:outline-none"
+                className="btn btn-outline btn-sm"
                 aria-label="Stop speech"
               >
-                Stop
+                ⏹ Stop
               </button>
             </div>
           </div>
+
         </div>
       ) : null}
     </section>
