@@ -9,5 +9,7 @@
             "default": true
         }
     ],
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "css.validate": false,
+    "css.lint.unknownAtRules": "ignore"
 }
