@@ -14,7 +14,7 @@ import axios from 'axios'
 // ── Axios instance ────────────────────────────────────────────────────────────
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
   timeout: 6000,        // fail fast so mock fallback feels instant
 })
 
@@ -28,7 +28,13 @@ api.interceptors.request.use((config) => {
 })
 
 api.interceptors.response.use(
-  (res) => res,
+  (res) => {
+    // If Netlify serves the index.html fallback for an API route, reject it so it triggers the Mock mode
+    if (typeof res.data === 'string' && res.data.toLowerCase().startsWith('<!doctype html>')) {
+      return Promise.reject({ response: { status: 503 }, message: 'Backend offline (served HTML fallback)' })
+    }
+    return res
+  },
   (err) => {
     if (err?.response?.status === 401) {
       localStorage.removeItem('divyam_token')

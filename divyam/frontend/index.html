@@ -2,18 +2,36 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="DIVYAM – AI Learning Platform India | Accessible Education for Visually Impaired Students | Student Resource Platform Coimbatore | VYAM Education System Tamil Nadu"
-    />
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/logo.png" />
+    
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="/logo-192.png" />
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#8B5CF6" />
+    
+    <!-- SEO -->
+    <meta name="title" content="DIVYAM – Accessible Learning Platform" />
+    <meta name="description" content="AI-powered inclusive education platform for visually impaired students." />
     <meta name="keywords" content="AI Learning Platform India, accessible education, DIVYAM, visually impaired students, Student Resource Platform Coimbatore, VYAM Education System Tamil Nadu" />
     <meta name="robots" content="index, follow" />
-    <meta property="og:title" content="DIVYAM — Accessible AI Learning Platform" />
-    <meta property="og:description" content="Digital Innovation for Visionary Young Accessible Minds — premium accessible education platform for students across India." />
+    
+    <!-- Open Graph (for WhatsApp, LinkedIn, Facebook) -->
     <meta property="og:type" content="website" />
-    <title>DIVYAM — AI Learning Platform India | Accessible Education</title>
+    <meta property="og:title" content="DIVYAM – Accessible Learning" />
+    <meta property="og:description" content="Empowering visually impaired students with AI-based learning." />
+    <meta property="og:image" content="/logo.png" />
+    <meta property="og:url" content="http://localhost:5173" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="DIVYAM – Accessible Learning" />
+    <meta name="twitter:description" content="AI-powered inclusive education platform." />
+    <meta name="twitter:image" content="/logo.png" />
+
+    <title>DIVYAM – Accessible Learning Platform</title>
     <!-- Google Fonts: Inter + Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,7 +41,18 @@
     />
   </head>
   <body class="bg-[#FAFAFF] text-[#111827] antialiased">
-    <div id="root"></div>
+    <div id="root">
+      <!-- Splash Screen (shown while React is loading) -->
+      <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #FAFAFF; flex-direction: column;">
+        <img src="/logo.png" alt="DIVYAM" style="width: 120px; height: 120px; animation: splashPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;" />
+        <style>
+          @keyframes splashPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.08); }
+          }
+        </style>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useAuth } from '../context/AuthContext.jsx'
 import Loader from '../components/Loader.jsx'
+import DivyamLogo from '../components/DivyamLogo.jsx'
 
 export default function Login() {
   const { login, isLoading } = useAuth()
@@ -39,11 +40,14 @@ export default function Login() {
         transition={{ duration: 0.35 }}
         className="w-full max-w-md"
       >
-        {/* Header */}
+        {/* Logo + Header */}
         <div className="mb-8 text-center">
+          <div className="flex justify-center mb-4">
+            <DivyamLogo size={64} />
+          </div>
           <h1
             className="text-3xl font-extrabold"
-            style={{ fontFamily: 'Poppins,sans-serif', background: 'linear-gradient(135deg,#8B5CF6,#C4B5FD)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
+            style={{ fontFamily: 'Poppins,sans-serif', background: 'linear-gradient(135deg,#8B5CF6,#6366F1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
           >
             Welcome Back
           </h1>
@@ -136,9 +140,12 @@ export default function Login() {
             </p>
           </form>
 
+          {/* Gradient divider */}
+          <div className="divider mt-5" />
+
           {/* Demo credentials */}
           <details
-            className="mt-5 rounded-xl border"
+            className="rounded-xl border"
             style={{ borderColor: 'rgba(196,181,253,0.3)', background: 'rgba(237,233,254,0.3)' }}
           >
             <summary

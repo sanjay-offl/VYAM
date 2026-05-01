@@ -44,22 +44,68 @@ function persist(next) {
   emitChange()
 }
 
+/**
+ * Voice command → route path mapping.
+ *
+ * Rules are ordered from most-specific to least-specific so that
+ * "go to live class" matches "/live" before "class" alone could
+ * accidentally match something else. Each rule uses `includes()`
+ * for flexible matching ("open dashboard", "go to dashboard", etc.).
+ *
+ * A cooldown ref in VoiceNavBridge prevents duplicate triggers.
+ */
+const VOICE_ROUTES = [
+  // Multi-word phrases first (most specific)
+  { keywords: ['live class'],            to: '/live' },
+  { keywords: ['recorded lectures'],     to: '/recorded' },
+  { keywords: ['teacher panel'],         to: '/teacher' },
+  { keywords: ['sign in'],              to: '/login' },
+  { keywords: ['sign up'],              to: '/register' },
+  { keywords: ['log out'],              to: '__logout__' },
+
+  // Single keywords (less specific)
+  { keywords: ['dashboard', 'dash board'], to: '/dashboard' },
+  { keywords: ['live'],                   to: '/live' },
+  { keywords: ['recorded', 'lectures', 'videos'], to: '/recorded' },
+  { keywords: ['teacher', 'panel'],       to: '/teacher' },
+  { keywords: ['login'],                 to: '/login' },
+  { keywords: ['register'],              to: '/register' },
+  { keywords: ['logout'],                to: '__logout__' },
+  { keywords: ['home'],                  to: '/' },
+]
+
+/**
+ * Returns a human-readable label for the matched route (used for TTS + UI).
+ */
+const ROUTE_LABELS = {
+  '/':          'Home',
+  '/dashboard': 'Dashboard',
+  '/live':      'Live Class',
+  '/recorded':  'Recorded Lectures',
+  '/teacher':   'Teacher Panel',
+  '/login':     'Login',
+  '/register':  'Register',
+  __logout__:   'Logging out',
+}
+
 export function voiceCommandToPath(command) {
   const c = String(command || '').toLowerCase().trim()
   if (!c) return null
 
-  const map = [
-    { match: ['home'], to: '/' },
-    { match: ['dashboard', 'dash'], to: '/dashboard' },
-    { match: ['live', 'live class', 'class'], to: '/live' },
-    { match: ['recorded', 'lectures', 'recorded lectures', 'videos'], to: '/recorded' },
-    { match: ['teacher', 'teacher panel', 'panel'], to: '/teacher' },
-    { match: ['login', 'sign in'], to: '/login' },
-    { match: ['register', 'sign up'], to: '/register' },
-  ]
+  // Strip common prefixes so "go to dashboard" ⇒ still matches "dashboard"
+  // (already handled by includes, but this note explains the design)
 
-  const target = map.find((item) => item.match.some((m) => c.includes(m)))
-  return target?.to || null
+  for (const rule of VOICE_ROUTES) {
+    if (rule.keywords.some((kw) => c.includes(kw))) {
+      return rule.to
+    }
+  }
+
+  return null
+}
+
+export function getRouteLabel(path) {
+  return ROUTE_LABELS[path] || null
 }
 
 function setHighContrast(highContrast) {

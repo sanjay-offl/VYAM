@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { analyticsApi, uploadLectureApi } from '../services/api.js'
 import Loader from '../components/Loader.jsx'
+import Skeleton from '../components/Skeleton.jsx'
 
 export default function TeacherPanel() {
   const [title, setTitle] = useState('')
@@ -10,11 +11,16 @@ export default function TeacherPanel() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [analytics, setAnalytics] = useState(null)
+  const [statsLoading, setStatsLoading] = useState(true)
+  const [dragOver, setDragOver] = useState(false)
 
   useEffect(() => {
     analyticsApi()
-      .then((d) => setAnalytics(d?.summary || d?.analytics || null))
-      .catch(() => {}) // Unexpected errors — analytics stays null, zeros shown
+      .then((d) => {
+        setAnalytics(d?.summary || d?.analytics || null)
+        setStatsLoading(false)
+      })
+      .catch(() => { setStatsLoading(false) }) // Unexpected errors — analytics stays null, zeros shown
   }, [])
 
 
@@ -44,6 +50,15 @@ export default function TeacherPanel() {
     }
   }
 
+  function handleDrop(e) {
+    e.preventDefault()
+    setDragOver(false)
+    const droppedFile = e.dataTransfer.files?.[0]
+    if (droppedFile && droppedFile.type.startsWith('video/')) {
+      setFile(droppedFile)
+    }
+  }
+
   const stats = [
     { icon: '📖', value: analytics?.completedLectures ?? '—', label: 'Lectures Uploaded' },
     { icon: '⏱️', value: analytics?.minutesWatched ?? '—', label: 'Minutes Watched' },
@@ -62,11 +77,11 @@ export default function TeacherPanel() {
       {/* Header */}
       <header
         className="rounded-2xl border px-6 py-5"
-        style={{ background: 'linear-gradient(135deg,rgba(237,233,254,0.65),rgba(245,243,255,0.55))', borderColor: 'rgba(196,181,253,0.35)' }}
+        style={{ background: 'linear-gradient(135deg,rgba(237,233,254,0.65),rgba(224,231,255,0.45))', borderColor: 'rgba(196,181,253,0.35)' }}
       >
         <h1
           className="text-2xl font-extrabold"
-          style={{ fontFamily: 'Poppins,sans-serif', background: 'linear-gradient(135deg,#7C3AED,#C4B5FD)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
+          style={{ fontFamily: 'Poppins,sans-serif', background: 'linear-gradient(135deg,#8B5CF6,#6366F1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
         >
           👨‍🏫 Teacher Panel
         </h1>
@@ -76,24 +91,28 @@ export default function TeacherPanel() {
       </header>
 
       {/* Analytics Stats */}
-      <section className="grid gap-4 md:grid-cols-3" aria-label="Class analytics">
-        {stats.map((s) => (
-          <div
-            key={s.label}
-            className="rounded-2xl border p-5 text-center transition-all duration-250 hover:-translate-y-1 hover:shadow-glass"
-            style={{ background: 'rgba(255,255,255,0.65)', borderColor: 'rgba(139,92,246,0.15)', backdropFilter: 'blur(12px)' }}
-          >
-            <div className="text-2xl mb-2" aria-hidden="true">{s.icon}</div>
+      {statsLoading ? (
+        <Skeleton variant="stat" count={3} />
+      ) : (
+        <section className="grid gap-4 md:grid-cols-3" aria-label="Class analytics">
+          {stats.map((s) => (
             <div
-              className="text-3xl font-extrabold"
-              style={{ fontFamily: 'Poppins,sans-serif', background: 'linear-gradient(135deg,#C4B5FD,#8B5CF6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
+              key={s.label}
+              className="rounded-2xl border p-5 text-center transition-all duration-250 hover:-translate-y-1 hover:shadow-glass"
+              style={{ background: 'rgba(255,255,255,0.65)', borderColor: 'rgba(139,92,246,0.15)', backdropFilter: 'blur(12px)' }}
             >
-              {s.value}
+              <div className="text-2xl mb-2" aria-hidden="true">{s.icon}</div>
+              <div
+                className="text-3xl font-extrabold"
+                style={{ fontFamily: 'Poppins,sans-serif', background: 'linear-gradient(135deg,#8B5CF6,#6366F1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
+              >
+                {s.value}
+              </div>
+              <div className="mt-1.5 text-xs font-semibold uppercase tracking-wider text-gray-400">{s.label}</div>
             </div>
-            <div className="mt-1.5 text-xs font-semibold uppercase tracking-wider text-gray-400">{s.label}</div>
-          </div>
-        ))}
-      </section>
+          ))}
+        </section>
+      )}
 
       {/* Action Forms */}
       <section className="grid gap-5 md:grid-cols-2" aria-label="Teacher actions">
@@ -156,12 +175,39 @@ export default function TeacherPanel() {
             </div>
             <div className="form-group">
               <label htmlFor="lec-file">Video File</label>
+              {/* Drag-and-drop zone */}
+              <div
+                className="rounded-xl border-2 border-dashed p-6 text-center transition-all cursor-pointer"
+                style={{
+                  borderColor: dragOver ? '#8B5CF6' : 'rgba(139,92,246,0.25)',
+                  background: dragOver ? 'rgba(237,233,254,0.6)' : 'rgba(255,255,255,0.5)',
+                }}
+                onDragOver={(e) => { e.preventDefault(); setDragOver(true) }}
+                onDragLeave={() => setDragOver(false)}
+                onDrop={handleDrop}
+                onClick={() => document.getElementById('lec-file')?.click()}
+                role="button"
+                tabIndex={0}
+                aria-label="Drop video file here or click to select"
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') document.getElementById('lec-file')?.click() }}
+              >
+                <div className="text-2xl mb-2" aria-hidden="true">📁</div>
+                <p className="text-sm text-gray-600">
+                  {file ? (
+                    <span className="font-medium" style={{ color: '#7C3AED' }}>{file.name}</span>
+                  ) : (
+                    <>Drop video here or <span className="font-semibold" style={{ color: '#8B5CF6' }}>browse</span></>
+                  )}
+                </p>
+                <p className="text-xs text-gray-400 mt-1">Supports MP4, WebM, MOV</p>
+              </div>
               <input
                 id="lec-file"
                 type="file"
                 accept="video/*"
                 onChange={(e) => setFile(e.target.files?.[0] || null)}
                 aria-label="Select video file"
+                className="hidden"
                 required
               />
             </div>

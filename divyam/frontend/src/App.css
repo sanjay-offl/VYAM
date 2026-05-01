@@ -43,7 +43,7 @@ a:hover { color: rgb(var(--color-accent)); }
 }
 
 .card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow: 0 8px 32px rgba(139,92,246,0.16), 0 2px 8px rgba(0,0,0,0.06);
   border-color: rgba(139,92,246,0.28);
 }
@@ -80,6 +80,7 @@ a:hover { color: rgb(var(--color-accent)); }
   text-decoration: none;
   white-space: nowrap;
   box-sizing: border-box;
+  min-height: 44px; /* A11y: touch target */
 }
 
 /* Make .btn fill container width when combined with w-full */
@@ -138,11 +139,13 @@ a.btn.w-full {
   padding: 0.45rem 0.9rem;
   font-size: 0.82rem;
   border-radius: 10px;
+  min-height: 36px;
 }
 .btn-lg {
   padding: 0.85rem 2rem;
   font-size: 1rem;
   border-radius: 14px;
+  min-height: 48px;
 }
 
 /* ── Forms ──────────────────────────────────────────────── */
@@ -159,6 +162,7 @@ select {
   color: rgb(var(--color-text));
   transition: all 0.2s ease;
   box-sizing: border-box;
+  min-height: 44px; /* A11y: touch target */
 }
 
 input::placeholder,
@@ -270,6 +274,68 @@ label {
   background: rgba(196,181,253,0.15);
 }
 
+/* ── Bottom Navigation ─────────────────────────────────── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 45;
+  align-items: center;
+  justify-content: space-around;
+  height: var(--bottom-nav-h);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid rgba(139,92,246,0.12);
+  box-shadow: 0 -2px 16px rgba(139,92,246,0.08);
+}
+
+.bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 12px;
+  color: #9CA3AF;
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  min-width: 3.5rem;
+  min-height: 44px;
+}
+
+.bottom-nav-item .bottom-nav-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.bottom-nav-item.active {
+  color: #8B5CF6;
+  background: rgba(139,92,246,0.08);
+}
+
+.bottom-nav-item.active .bottom-nav-icon {
+  transform: scale(1.1);
+}
+
+/* Active indicator dot under icon */
+.bottom-nav-item.active::after {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  background: #8B5CF6;
+  box-shadow: 0 0 8px rgba(139,92,246,0.5);
+  margin-top: 1px;
+}
+
 /* ── Stat Box ───────────────────────────────────────────── */
 .stat-box {
   padding: 1.5rem;
@@ -359,12 +425,32 @@ label {
 .fade-up  { animation: fadeUp  0.35s ease forwards; }
 .scale-in { animation: scaleIn 0.25s ease forwards; }
 
+/* ── Mic pulse rings ────────────────────────────────────── */
+.mic-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 2px solid rgba(139, 92, 246, 0.3);
+  animation: micRing 2s ease-out infinite;
+}
+.mic-ring:nth-child(2) { animation-delay: 0.4s; }
+.mic-ring:nth-child(3) { animation-delay: 0.8s; }
+
+@keyframes micRing {
+  0%   { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
 /* ── Responsive ─────────────────────────────────────────── */
 @media (max-width: 768px) {
   h1 { font-size: 1.75rem; }
   h2 { font-size: 1.35rem; }
   .container { padding: 0 1rem; }
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+
+  /* Ensure minimum 16px font on mobile */
+  body { font-size: 16px; }
+  input, textarea, select { font-size: 16px; }
 }
 
 /* ── Utilities ──────────────────────────────────────────── */

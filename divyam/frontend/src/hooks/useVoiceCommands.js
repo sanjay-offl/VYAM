@@ -13,6 +13,8 @@ import useSpeech from './useSpeech.js'
  *  - new SpeechRecognition() on each start (never reuse old instances)
  *  - debounced restart (200ms) to prevent tight loops on rapid onend
  *  - not-allowed / network errors: stop cycling, surface to UI
+ *  - Fires 'divyam:voice' CustomEvent with the final transcript for
+ *    downstream consumers (VoiceNavBridge, VoiceAssistant UI)
  */
 export default function useVoiceCommands({ enabled, ttsEnabled }) {
   const { speak } = useSpeech({ enabled: Boolean(ttsEnabled) })
@@ -74,6 +76,7 @@ export default function useVoiceCommands({ enabled, ttsEnabled }) {
 
     rec.onstart = () => {
       if (activeRec.current !== rec) return // stale instance
+      console.log('[DIVYAM Voice] 🎙️ Recognition started')
       setListening(true)
       setVoiceError('')
     }
@@ -81,17 +84,23 @@ export default function useVoiceCommands({ enabled, ttsEnabled }) {
     rec.onresult = (event) => {
       if (activeRec.current !== rec) return // stale instance
 
-      const last = event.results?.[event.results.length - 1]
-      if (!last) return
+      // Process only the latest final result
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const result = event.results[i]
+        if (!result.isFinal) continue
 
-      // Try all alternatives for better Indian-English accuracy
-      const transcript =
-        last?.[0]?.transcript ||
-        last?.[1]?.transcript ||
-        last?.[2]?.transcript || ''
+        // Try all alternatives for better Indian-English accuracy
+        const transcript =
+          result?.[0]?.transcript ||
+          result?.[1]?.transcript ||
+          result?.[2]?.transcript || ''
 
-      const text = transcript.trim()
-      if (text) {
+        const text = transcript.trim()
+        if (!text) continue
+
+        console.log(`[DIVYAM Voice] 📝 Heard: "${text}"`)
+
+        // Dispatch to all listeners (VoiceNavBridge + VoiceAssistant UI)
         window.dispatchEvent(new CustomEvent('divyam:voice', { detail: text }))
       }
     }
@@ -100,6 +109,7 @@ export default function useVoiceCommands({ enabled, ttsEnabled }) {
       if (activeRec.current !== rec) return // stale instance
 
       const code = event?.error || 'unknown'
+      console.warn(`[DIVYAM Voice] ⚠️ Error: ${code}`)
 
       if (code === 'not-allowed' || code === 'permission-denied') {
         const msg = 'Microphone access denied. Please allow microphone permission in your browser settings and try again.'
@@ -137,6 +147,7 @@ export default function useVoiceCommands({ enabled, ttsEnabled }) {
       if (activeRec.current !== rec) return // stale instance
 
       activeRec.current = null
+      console.log('[DIVYAM Voice] 🔄 Recognition ended, restarting…')
 
       // Restart only if we're still supposed to be listening
       if (shouldRestart.current) {
@@ -150,6 +161,7 @@ export default function useVoiceCommands({ enabled, ttsEnabled }) {
     try {
       rec.start()
     } catch (err) {
+      console.warn('[DIVYAM Voice] ⚠️ Start failed:', err.message)
       // e.g. InvalidStateError — discard this instance, schedule retry
       activeRec.current = null
       if (shouldRestart.current) {

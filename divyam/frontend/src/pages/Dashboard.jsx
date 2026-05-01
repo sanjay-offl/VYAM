@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useAuth } from '../context/AuthContext.jsx'
 import { analyticsApi, listLecturesApi } from '../services/api.js'
-import Loader from '../components/Loader.jsx'
+import Skeleton from '../components/Skeleton.jsx'
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -60,16 +60,16 @@ export default function Dashboard() {
 
       {/* ── Welcome Banner ───────────────────────────────────── */}
       <section
-        className="rounded-2xl border px-7 py-6"
+        className="rounded-2xl border px-6 py-6 md:px-7"
         style={{
-          background: 'linear-gradient(135deg,rgba(237,233,254,0.65),rgba(245,243,255,0.55))',
+          background: 'linear-gradient(135deg,rgba(237,233,254,0.65),rgba(224,231,255,0.45))',
           borderColor: 'rgba(196,181,253,0.35)',
           backdropFilter: 'blur(12px)',
         }}
       >
         <h1
           className="text-3xl font-extrabold"
-          style={{ fontFamily: 'Poppins,sans-serif', background: 'linear-gradient(135deg,#7C3AED,#C4B5FD)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
+          style={{ fontFamily: 'Poppins,sans-serif', background: 'linear-gradient(135deg,#8B5CF6,#6366F1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
         >
           Dashboard
         </h1>
@@ -80,34 +80,36 @@ export default function Dashboard() {
         </p>
       </section>
 
-      {loading ? <Loader label="Loading dashboard…" /> : null}
-
       {/* ── Stats Grid ───────────────────────────────────────── */}
-      <motion.section
-        className="grid gap-4 md:grid-cols-3"
-        aria-label="Student progress"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {stats.map((s) => (
-          <motion.div
-            key={s.label}
-            variants={itemVariants}
-            className="rounded-2xl border p-5 text-center transition-all duration-250 hover:-translate-y-1 hover:shadow-glass"
-            style={{ background: 'rgba(255,255,255,0.65)', borderColor: 'rgba(139,92,246,0.15)', backdropFilter: 'blur(12px)' }}
-          >
-            <div className="text-2xl mb-2" aria-hidden="true">{s.icon}</div>
-            <div
-              className="text-4xl font-extrabold leading-none"
-              style={{ fontFamily: 'Poppins,sans-serif', background: 'linear-gradient(135deg,#C4B5FD,#8B5CF6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
+      {loading ? (
+        <Skeleton variant="stat" count={3} />
+      ) : (
+        <motion.section
+          className="grid gap-4 md:grid-cols-3"
+          aria-label="Student progress"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {stats.map((s) => (
+            <motion.div
+              key={s.label}
+              variants={itemVariants}
+              className="rounded-2xl border p-5 text-center transition-all duration-250 hover:-translate-y-1 hover:shadow-glass"
+              style={{ background: 'rgba(255,255,255,0.65)', borderColor: 'rgba(139,92,246,0.15)', backdropFilter: 'blur(12px)' }}
             >
-              {s.value}
-            </div>
-            <div className="mt-2 text-xs font-semibold uppercase tracking-wider text-gray-400">{s.label}</div>
-          </motion.div>
-        ))}
-      </motion.section>
+              <div className="text-2xl mb-2" aria-hidden="true">{s.icon}</div>
+              <div
+                className="text-4xl font-extrabold leading-none"
+                style={{ fontFamily: 'Poppins,sans-serif', background: 'linear-gradient(135deg,#8B5CF6,#6366F1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
+              >
+                {s.value}
+              </div>
+              <div className="mt-2 text-xs font-semibold uppercase tracking-wider text-gray-400">{s.label}</div>
+            </motion.div>
+          ))}
+        </motion.section>
+      )}
 
       {/* ── Recommended Lectures ─────────────────────────────── */}
       <section aria-label="Recommended lectures" className="space-y-4">
@@ -124,30 +126,34 @@ export default function Dashboard() {
           </Link>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
-          {(lectures || []).slice(0, 4).map((l, i) => (
-            <motion.article
-              key={l.id}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.08, duration: 0.28 }}
-              className="group rounded-2xl border p-5 transition-all duration-250 hover:-translate-y-1 hover:shadow-glass"
-              style={{ background: 'rgba(255,255,255,0.65)', borderColor: 'rgba(139,92,246,0.15)', backdropFilter: 'blur(12px)' }}
-            >
-              <h3 className="text-sm font-semibold text-gray-900 leading-snug">{l.title}</h3>
-              <p className="mt-2 text-sm text-gray-500 leading-relaxed">{l.description}</p>
-              <div className="mt-4">
-                <Link
-                  to="/recorded"
-                  className="btn btn-primary btn-sm"
-                  aria-label={`Watch lecture: ${l.title}`}
-                >
-                  ▶ Watch Lecture
-                </Link>
-              </div>
-            </motion.article>
-          ))}
-        </div>
+        {loading ? (
+          <Skeleton variant="card" count={2} />
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2">
+            {(lectures || []).slice(0, 4).map((l, i) => (
+              <motion.article
+                key={l.id}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.08, duration: 0.28 }}
+                className="group rounded-2xl border p-5 transition-all duration-250 hover:-translate-y-1 hover:shadow-glass hover:border-lavender-300/50"
+                style={{ background: 'rgba(255,255,255,0.65)', borderColor: 'rgba(139,92,246,0.15)', backdropFilter: 'blur(12px)' }}
+              >
+                <h3 className="text-sm font-semibold text-gray-900 leading-snug">{l.title}</h3>
+                <p className="mt-2 text-sm text-gray-500 leading-relaxed">{l.description}</p>
+                <div className="mt-4">
+                  <Link
+                    to="/recorded"
+                    className="btn btn-primary btn-sm"
+                    aria-label={`Watch lecture: ${l.title}`}
+                  >
+                    ▶ Watch Lecture
+                  </Link>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* ── Quick Actions ─────────────────────────────────────── */}

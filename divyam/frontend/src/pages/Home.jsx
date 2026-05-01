@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import DivyamLogo from '../components/DivyamLogo.jsx'
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -45,28 +46,30 @@ export default function Home() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative overflow-hidden rounded-3xl border px-8 py-12 md:py-16"
+        className="relative overflow-hidden rounded-3xl border px-6 py-12 md:px-10 md:py-16"
         style={{
-          background: 'linear-gradient(135deg, rgba(237,233,254,0.7) 0%, rgba(245,243,255,0.6) 100%)',
+          background: 'linear-gradient(135deg, rgba(237,233,254,0.7) 0%, rgba(245,243,255,0.6) 50%, rgba(224,231,255,0.4) 100%)',
           borderColor: 'rgba(196,181,253,0.35)',
           backdropFilter: 'blur(16px)',
         }}
       >
         {/* Decorative orbs */}
         <div
-          className="pointer-events-none absolute -top-16 -right-16 h-64 w-64 rounded-full opacity-30"
+          className="pointer-events-none absolute -top-20 -right-20 h-72 w-72 rounded-full opacity-25"
           style={{ background: 'radial-gradient(circle, #C4B5FD, transparent 70%)' }}
           aria-hidden="true"
         />
         <div
-          className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full opacity-20"
-          style={{ background: 'radial-gradient(circle, #8B5CF6, transparent 70%)' }}
+          className="pointer-events-none absolute -bottom-16 -left-16 h-56 w-56 rounded-full opacity-20"
+          style={{ background: 'radial-gradient(circle, #818CF8, transparent 70%)' }}
           aria-hidden="true"
         />
 
-        <motion.div variants={itemVariants} className="relative">
+        {/* Logo + Badge */}
+        <motion.div variants={itemVariants} className="relative flex flex-wrap items-center gap-4 mb-6">
+          <DivyamLogo size={56} className="drop-shadow-sm" />
           <span
-            className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-widest"
+            className="inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-widest"
             style={{ background: 'rgba(196,181,253,0.3)', color: '#7C3AED', border: '1px solid rgba(196,181,253,0.5)' }}
           >
             🇮🇳 AI Learning Platform India
@@ -78,7 +81,7 @@ export default function Home() {
           className="relative mt-2 text-4xl font-extrabold leading-tight md:text-5xl lg:text-6xl"
           style={{ fontFamily: 'Poppins, sans-serif' }}
         >
-          <span style={{ background: 'linear-gradient(135deg,#7C3AED,#C4B5FD)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+          <span style={{ background: 'linear-gradient(135deg,#8B5CF6,#6366F1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
             DIVYAM
           </span>
           <br />
@@ -99,14 +102,14 @@ export default function Home() {
         <motion.div variants={itemVariants} className="relative mt-8 flex flex-wrap gap-3">
           <Link
             to="/login"
-            className="btn btn-primary"
+            className="btn btn-primary btn-lg"
             aria-label="Sign in or register for DIVYAM"
           >
             🚀 Get Started
           </Link>
           <Link
             to="/dashboard"
-            className="btn btn-outline"
+            className="btn btn-outline btn-lg"
             aria-label="Go to dashboard"
           >
             Open Dashboard →
@@ -116,17 +119,21 @@ export default function Home() {
         {/* Stats ribbon */}
         <motion.div
           variants={itemVariants}
-          className="relative mt-10 flex flex-wrap gap-6"
+          className="relative mt-10 grid grid-cols-3 gap-4 max-w-md"
         >
           {[
             { value: '10K+', label: 'Students' },
             { value: '500+', label: 'Lectures' },
             { value: '98%', label: 'Satisfaction' },
           ].map((s) => (
-            <div key={s.label} className="text-center">
+            <div
+              key={s.label}
+              className="text-center rounded-xl p-3 border"
+              style={{ background: 'rgba(255,255,255,0.5)', borderColor: 'rgba(196,181,253,0.25)' }}
+            >
               <div
                 className="text-2xl font-extrabold"
-                style={{ fontFamily: 'Poppins, sans-serif', background: 'linear-gradient(135deg,#8B5CF6,#C4B5FD)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
+                style={{ fontFamily: 'Poppins, sans-serif', background: 'linear-gradient(135deg,#8B5CF6,#6366F1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
               >
                 {s.value}
               </div>
@@ -158,7 +165,7 @@ export default function Home() {
             >
               <div
                 className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl text-2xl"
-                style={{ background: 'linear-gradient(135deg,rgba(196,181,253,0.3),rgba(139,92,246,0.15))' }}
+                style={{ background: 'linear-gradient(135deg,rgba(196,181,253,0.3),rgba(99,102,241,0.15))' }}
               >
                 {f.icon}
               </div>

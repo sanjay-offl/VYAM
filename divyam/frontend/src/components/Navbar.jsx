@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
+import DivyamLogo from './DivyamLogo.jsx'
 
 function NavItem({ to, children, ariaLabel, onClick }) {
   return (
@@ -11,7 +12,7 @@ function NavItem({ to, children, ariaLabel, onClick }) {
       className={({ isActive }) =>
         `nav-item transition-all duration-200 ${
           isActive
-            ? 'bg-lavender-100/60 text-lavender-700 font-semibold'
+            ? 'bg-lavender-100/60 text-lavender-700 font-semibold shadow-sm'
             : 'text-gray-500 hover:text-lavender-700 hover:bg-lavender-50/50'
         }`
       }
@@ -37,25 +38,42 @@ export default function Navbar() {
     : 'U'
 
   return (
-    <header className="sticky top-0 z-40" style={{ background: 'rgba(255,255,255,0.78)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(139,92,246,0.12)' }}>
+    <header
+      className="sticky top-0 z-40"
+      style={{
+        background: 'rgba(255,255,255,0.78)',
+        backdropFilter: 'blur(24px)',
+        WebkitBackdropFilter: 'blur(24px)',
+        borderBottom: '1px solid rgba(139,92,246,0.12)',
+      }}
+    >
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 md:px-6">
 
-        {/* Brand */}
+        {/* Brand — Logo + Name */}
         <div className="flex items-center gap-3 shrink-0">
           <Link
             to="/"
-            className="flex items-center gap-2 rounded-xl px-2 py-1 focus:outline-none transition-opacity hover:opacity-85"
+            className="flex items-center gap-2.5 rounded-xl px-2 py-1.5 focus:outline-none transition-all hover:opacity-90 hover:scale-[1.02]"
             aria-label="Go to DIVYAM Home"
           >
-            <span
-              className="text-xl font-extrabold tracking-tight"
-              style={{ fontFamily: 'Poppins, sans-serif', background: 'linear-gradient(135deg,#C4B5FD,#8B5CF6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
-            >
-              DIVYAM
-            </span>
-            <span className="hidden text-xs text-gray-400 font-normal md:inline">
-              Accessible Learning
-            </span>
+            <DivyamLogo size={36} />
+            <div className="flex flex-col">
+              <span
+                className="text-xl font-extrabold tracking-tight leading-none"
+                style={{
+                  fontFamily: 'Poppins, sans-serif',
+                  background: 'linear-gradient(135deg,#8B5CF6,#6366F1)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
+                DIVYAM
+              </span>
+              <span className="hidden text-[10px] text-gray-400 font-medium tracking-wide lg:inline">
+                Accessible Learning
+              </span>
+            </div>
           </Link>
         </div>
 
@@ -84,10 +102,10 @@ export default function Navbar() {
           {isAuthenticated ? (
             <>
               {/* User badge */}
-              <div className="hidden items-center gap-2 md:flex">
+              <div className="hidden items-center gap-2.5 md:flex">
                 <div
-                  className="flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-white"
-                  style={{ background: 'linear-gradient(135deg,#C4B5FD,#8B5CF6)' }}
+                  className="flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold text-white shadow-purple-sm"
+                  style={{ background: 'linear-gradient(135deg,#8B5CF6,#6366F1)' }}
                   aria-hidden="true"
                 >
                   {initials}
@@ -116,7 +134,7 @@ export default function Navbar() {
           {/* Mobile hamburger */}
           <button
             type="button"
-            className="flex h-9 w-9 items-center justify-center rounded-xl border md:hidden transition-colors"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border md:hidden transition-colors"
             style={{ borderColor: 'rgba(139,92,246,0.2)', background: 'rgba(237,233,254,0.5)' }}
             onClick={() => setMobileOpen((v) => !v)}
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
@@ -152,7 +170,7 @@ export default function Navbar() {
       {/* Mobile Dropdown */}
       {mobileOpen && (
         <div
-          className="border-t px-4 py-4 md:hidden"
+          className="border-t px-4 py-4 md:hidden animate-fade-in"
           style={{ background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(20px)', borderColor: 'rgba(139,92,246,0.12)' }}
           role="navigation"
           aria-label="Mobile navigation"
@@ -170,8 +188,8 @@ export default function Navbar() {
                 <div className="mt-3 pt-3" style={{ borderTop: '1px solid rgba(139,92,246,0.12)' }}>
                   <div className="mb-2 flex items-center gap-2">
                     <div
-                      className="flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold text-white"
-                      style={{ background: 'linear-gradient(135deg,#C4B5FD,#8B5CF6)' }}
+                      className="flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-white"
+                      style={{ background: 'linear-gradient(135deg,#8B5CF6,#6366F1)' }}
                     >
                       {initials}
                     </div>

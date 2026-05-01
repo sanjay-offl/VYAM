@@ -38,6 +38,9 @@
   --glass-border:    rgba(139,92,246,0.15);
   --glass-shadow:    0 4px 24px rgba(139,92,246,0.10), 0 1px 4px rgba(0,0,0,0.04);
 
+  /* ── Layout ────────────────────────────────────────────── */
+  --bottom-nav-h: 4.25rem;
+
   /* ── Typography ────────────────────────────────────────── */
   color-scheme: light;
   font-synthesis: none;
@@ -114,6 +117,60 @@ body {
   color: rgb(var(--color-text));
 }
 .skip-link:focus { transform: translateY(0); }
+
+/* ── Bottom sheet overlay ───────────────────────────────── */
+.bottom-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.bottom-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 56;
+  max-height: 75vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: 1.25rem 1.25rem 0 0;
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid rgba(139,92,246,0.15);
+  box-shadow: 0 -8px 40px rgba(139,92,246,0.15), 0 -2px 8px rgba(0,0,0,0.05);
+  padding: 0.75rem 1.25rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
+}
+
+.bottom-sheet-handle {
+  width: 2.5rem;
+  height: 0.25rem;
+  border-radius: 9999px;
+  background: rgba(139, 92, 246, 0.25);
+  margin: 0 auto 1rem;
+}
+
+/* ── Skeleton shimmer ───────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(237,233,254,0.5) 25%,
+    rgba(196,181,253,0.25) 50%,
+    rgba(237,233,254,0.5) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+  border-radius: 0.75rem;
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
 
 /* ── Reduced-motion safety ──────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {

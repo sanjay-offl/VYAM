@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useAuth } from '../context/AuthContext.jsx'
 import Loader from '../components/Loader.jsx'
+import DivyamLogo from '../components/DivyamLogo.jsx'
 import { ROLES } from '../utils/constants.js'
 
 export default function Register() {
@@ -40,11 +41,14 @@ export default function Register() {
         transition={{ duration: 0.35 }}
         className="w-full max-w-md"
       >
-        {/* Header */}
+        {/* Logo + Header */}
         <div className="mb-8 text-center">
+          <div className="flex justify-center mb-4">
+            <DivyamLogo size={64} />
+          </div>
           <h1
             className="text-3xl font-extrabold"
-            style={{ fontFamily: 'Poppins,sans-serif', background: 'linear-gradient(135deg,#8B5CF6,#C4B5FD)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
+            style={{ fontFamily: 'Poppins,sans-serif', background: 'linear-gradient(135deg,#8B5CF6,#6366F1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
           >
             Create Account
           </h1>

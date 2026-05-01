@@ -1,5 +1,6 @@
 /home/sanjay/VYAM/divyam/backend/src/main/java/com/divyam/DivyamApplication.java
 /home/sanjay/VYAM/divyam/backend/src/main/java/com/divyam/config/SecurityConfig.java
+/home/sanjay/VYAM/divyam/backend/src/main/java/com/divyam/config/WebSocketConfig.java
 /home/sanjay/VYAM/divyam/backend/src/main/java/com/divyam/controller/AnalyticsController.java
 /home/sanjay/VYAM/divyam/backend/src/main/java/com/divyam/controller/AuthController.java
 /home/sanjay/VYAM/divyam/backend/src/main/java/com/divyam/controller/LectureController.java
@@ -17,3 +18,4 @@
 /home/sanjay/VYAM/divyam/backend/src/main/java/com/divyam/service/AuthService.java
 /home/sanjay/VYAM/divyam/backend/src/main/java/com/divyam/service/LectureService.java
 /home/sanjay/VYAM/divyam/backend/src/main/java/com/divyam/util/VoiceUtil.java
+/home/sanjay/VYAM/divyam/backend/src/main/java/com/divyam/websocket/LiveClassWebSocketHandler.java
