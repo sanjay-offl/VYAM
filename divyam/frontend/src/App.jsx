@@ -123,12 +123,12 @@ export default function App() {
             <AccessibilityControls />
           </div>
 
-          <AnimatePresence mode="wait">
-            <Suspense fallback={
-              <div className="p-8">
-                <Skeleton variant="card" count={3} />
-              </div>
-            }>
+          <Suspense fallback={
+            <div className="p-8">
+              <Skeleton variant="card" count={3} />
+            </div>
+          }>
+            <AnimatePresence mode="wait">
               <Routes location={location} key={location.pathname}>
                 <Route path="/" element={<Page><Home /></Page>} />
                 <Route path="/login" element={<Page><Login /></Page>} />
@@ -151,8 +151,8 @@ export default function App() {
                 />
                 <Route path="*" element={<Page><NotFound /></Page>} />
               </Routes>
-            </Suspense>
-          </AnimatePresence>
+            </AnimatePresence>
+          </Suspense>
         </main>
       </div>
 
