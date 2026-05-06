@@ -36,7 +36,7 @@ cd backend
 mvn spring-boot:run
 ```
 
-Backend runs at `http://localhost:8080`.
+Backend runs at `http://localhost:8081`.
 
 ### Seeded demo users
 
@@ -73,7 +73,7 @@ Frontend runs at `http://127.0.0.1:5173`.
 
 Notes:
 
-- The frontend uses a Vite proxy so requests to `/api/*` go to `http://localhost:8080`.
+- The frontend uses a Vite proxy so requests to `/api/*` go to `http://localhost:8081`.
 - Recorded lectures and teacher panel are protected routes; log in first.
 
 ## 3) Database (PostgreSQL)
@@ -113,6 +113,49 @@ Core entities:
 	- Teacher → upload a lecture video in “Teacher Panel”
 	- Student → open “Recorded Lectures” and play videos
 4. Try voice navigation (browser-dependent SpeechRecognition support).
+
+## 6) Dev workflow (recommended)
+
+Run backend and frontend in separate terminals to avoid port conflicts.
+
+Terminal 1 — Backend:
+
+```bash
+cd backend
+mvn spring-boot:run
+```
+
+Terminal 2 — Frontend:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+### Port conflict (8081)
+
+If the backend fails to start because the port is in use:
+
+```bash
+lsof -i :8081
+kill -9 <PID>
+```
+
+### Emotion AI assets
+
+Face expression model weights are stored in:
+
+```
+frontend/public/models/emotion/
+```
+
+To re-download:
+
+```bash
+cd frontend
+npm run models:emotion:download
+```
 
 ## Troubleshooting
 

@@ -12,6 +12,9 @@
     "models:emotion:download": "node scripts/download-emotion-model.mjs"
   },
   "dependencies": {
+    "@mediapipe/camera_utils": "^0.3.1675466862",
+    "@mediapipe/drawing_utils": "^0.3.1675466124",
+    "@mediapipe/face_mesh": "^0.4.1633559619",
     "@tensorflow/tfjs": "^4.22.0",
     "@tensorflow/tfjs-backend-webgl": "^4.22.0",
     "axios": "^1.15.0",
@@ -22,6 +25,7 @@
     "react-dom": "^19.2.4",
     "react-helmet-async": "^3.0.0",
     "react-router-dom": "^7.14.1",
+    "react-webcam": "^7.2.0",
     "recharts": "^3.8.1"
   },
   "devDependencies": {
