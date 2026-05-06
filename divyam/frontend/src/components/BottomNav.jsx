@@ -17,6 +17,7 @@ export default function BottomNav() {
 
   if (user?.role === 'TEACHER') {
     tabs.push({ to: '/teacher', icon: '👨‍🏫', label: 'Teacher' })
+    tabs.push({ to: '/teacher-view', icon: '📈', label: 'Analytics' })
   }
 
   return (

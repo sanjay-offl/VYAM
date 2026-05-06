@@ -74,7 +74,10 @@ export default function Sidebar() {
       <Item to="/recorded"  icon="📚" label="Lectures" description="Watch on-demand lessons" />
 
       {user?.role === 'TEACHER' && (
-        <Item to="/teacher" icon="👨‍🏫" label="Teacher Panel" description="Manage uploads & analytics" />
+        <>
+          <Item to="/teacher" icon="👨‍🏫" label="Teacher Panel" description="Manage uploads & analytics" />
+          <Item to="/teacher-view" icon="📈" label="Teacher View" description="Historical analytics & exports" />
+        </>
       )}
 
       {/* Tip Card */}

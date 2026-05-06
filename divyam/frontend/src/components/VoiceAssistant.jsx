@@ -73,13 +73,21 @@ export default function VoiceAssistant() {
   }, [a11y.voiceNavEnabled])
 
   // Mic status indicator
+  const statusMap = {
+    off: { color: '#9CA3AF', label: 'Off' },
+    starting: { color: '#F59E0B', label: 'Starting…' },
+    listening: { color: '#22C55E', label: 'Listening…' },
+    processing: { color: '#3B82F6', label: 'Processing…' },
+    reconnecting: { color: '#F59E0B', label: 'Reconnecting…' },
+    paused: { color: '#9CA3AF', label: 'Mic paused' },
+    permission: { color: '#EF4444', label: 'Permission denied' },
+    unsupported: { color: '#EF4444', label: 'Unsupported' },
+    error: { color: '#EF4444', label: 'Error' },
+  }
+
   const micStatus = !a11y.voiceNavEnabled
-    ? { color: '#9CA3AF', label: 'Off' }
-    : a11y.voiceError
-    ? { color: '#EF4444', label: 'Error' }
-    : a11y.voiceListening
-    ? { color: '#22C55E', label: 'Listening…' }
-    : { color: '#F59E0B', label: 'Starting…' }
+    ? statusMap.off
+    : statusMap[a11y.voiceStatus] || statusMap.starting
 
   // Close on Escape
   useEffect(() => {
@@ -219,10 +227,26 @@ export default function VoiceAssistant() {
       )}
 
       {/* Microphone permission hint */}
-      {a11y.voiceNavEnabled && !a11y.voiceListening && !a11y.voiceError && a11y.voiceSupported && (
+      {a11y.voiceNavEnabled && !a11y.voiceListening && !a11y.voiceError && a11y.voiceSupported && a11y.voiceStatus !== 'paused' && (
         <p className="mt-3 text-[10px] text-gray-400 text-center">
           If the mic doesn't start, check browser microphone permissions.
         </p>
+      )}
+
+      {a11y.voiceNavEnabled && a11y.voiceStatus === 'paused' && (
+        <div className="mt-3 flex justify-center">
+          <button
+            type="button"
+            className="btn btn-primary btn-sm"
+            onClick={() => {
+              if (!a11y.voiceNavEnabled) a11y.setVoiceNavEnabled(true)
+              a11y.resumeVoice?.()
+            }}
+            aria-label="Resume voice recognition"
+          >
+            ▶ Resume Mic
+          </button>
+        </div>
       )}
     </>
   )

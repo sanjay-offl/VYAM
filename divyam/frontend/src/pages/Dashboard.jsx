@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { useAuth } from '../context/AuthContext.jsx'
 import { analyticsApi, listLecturesApi } from '../services/api.js'
 import Skeleton from '../components/Skeleton.jsx'
+import EmotionTracker from '../components/EmotionTracker.jsx'
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -110,6 +111,19 @@ export default function Dashboard() {
           ))}
         </motion.section>
       )}
+
+      {/* ── AI Emotion Tracking ────────────────────────────── */}
+      <section aria-label="AI emotion tracking" className="space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Poppins,sans-serif' }}>
+            AI Emotion Tracking
+          </h2>
+          <span className="rounded-full border border-purple-200/50 bg-purple-50 px-3 py-1 text-xs font-semibold text-purple-700">
+            Live Beta
+          </span>
+        </div>
+        <EmotionTracker />
+      </section>
 
       {/* ── Recommended Lectures ─────────────────────────────── */}
       <section aria-label="Recommended lectures" className="space-y-4">

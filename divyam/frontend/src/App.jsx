@@ -18,6 +18,7 @@ const Dashboard = lazy(() => import('./pages/Dashboard.jsx'))
 const LiveClass = lazy(() => import('./pages/LiveClass.jsx'))
 const RecordedLectures = lazy(() => import('./pages/RecordedLectures.jsx'))
 const TeacherPanel = lazy(() => import('./pages/TeacherPanel.jsx'))
+const TeacherView = lazy(() => import('./pages/TeacherView.jsx'))
 const Login = lazy(() => import('./pages/Login.jsx'))
 const Register = lazy(() => import('./pages/Register.jsx'))
 const NotFound = lazy(() => import('./pages/NotFound.jsx'))
@@ -148,6 +149,10 @@ export default function App() {
                 <Route
                   path="/teacher"
                   element={<ProtectedRoute role="TEACHER"><Page><TeacherPanel /></Page></ProtectedRoute>}
+                />
+                <Route
+                  path="/teacher-view"
+                  element={<ProtectedRoute role="TEACHER"><Page><TeacherView /></Page></ProtectedRoute>}
                 />
                 <Route path="*" element={<Page><NotFound /></Page>} />
               </Routes>

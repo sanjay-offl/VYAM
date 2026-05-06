@@ -59,6 +59,7 @@ const VOICE_ROUTES = [
   { keywords: ['live class'],            to: '/live' },
   { keywords: ['recorded lectures'],     to: '/recorded' },
   { keywords: ['teacher panel'],         to: '/teacher' },
+  { keywords: ['teacher view', 'teacher analytics'], to: '/teacher-view' },
   { keywords: ['sign in'],              to: '/login' },
   { keywords: ['sign up'],              to: '/register' },
   { keywords: ['log out'],              to: '__logout__' },
@@ -68,6 +69,7 @@ const VOICE_ROUTES = [
   { keywords: ['live'],                   to: '/live' },
   { keywords: ['recorded', 'lectures', 'videos'], to: '/recorded' },
   { keywords: ['teacher', 'panel'],       to: '/teacher' },
+  { keywords: ['analytics', 'teacher view'], to: '/teacher-view' },
   { keywords: ['login'],                 to: '/login' },
   { keywords: ['register'],              to: '/register' },
   { keywords: ['logout'],                to: '__logout__' },
@@ -83,6 +85,7 @@ const ROUTE_LABELS = {
   '/live':      'Live Class',
   '/recorded':  'Recorded Lectures',
   '/teacher':   'Teacher Panel',
+  '/teacher-view': 'Teacher View',
   '/login':     'Login',
   '/register':  'Register',
   __logout__:   'Logging out',
@@ -140,7 +143,13 @@ export default function useAccessibility() {
   )
 
   const { speak, stop } = useSpeech({ enabled: state.ttsEnabled })
-  const { supported: voiceSupported, listening: voiceListening, voiceError } = useVoiceCommands({
+  const {
+    supported: voiceSupported,
+    listening: voiceListening,
+    voiceError,
+    status: voiceStatus,
+    resume: resumeVoice,
+  } = useVoiceCommands({
     enabled: state.voiceNavEnabled,
     ttsEnabled: state.ttsEnabled,
   })
@@ -156,6 +165,8 @@ export default function useAccessibility() {
       voiceSupported,
       voiceListening,
       voiceError,
+      voiceStatus,
+      resumeVoice,
       setHighContrast,
       setTtsEnabled,
       setNarrationEnabled,
