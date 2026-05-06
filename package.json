@@ -2,9 +2,10 @@
   "name": "vyam",
   "private": true,
   "scripts": {
-    "dev": "mvn -f divyam/backend/pom.xml spring-boot:run",
-    "start": "mvn -f divyam/backend/pom.xml spring-boot:run",
-    "dev:frontend": "npm --prefix divyam/frontend run dev"
+    "dev": "npm --prefix divyam/frontend run dev",
+    "start": "npm --prefix divyam/frontend run preview",
+    "dev:frontend": "npm --prefix divyam/frontend run dev",
+    "dev:backend": "mvn -f divyam/backend/pom.xml spring-boot:run"
   },
   "devDependencies": {
     "autoprefixer": "^10.5.0",
